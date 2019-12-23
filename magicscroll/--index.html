@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Magic Scroll </title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body,
+        html {
+            height: 100%;
+            font-size: 16px;
+            font-weight: normal;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #f0f0ee;
+            margin: 0px;
+            padding: 0;
+        }
+        body{
+            padding-bottom: 200px;
+        }
+        .placeholder {
+            height: 100vh;
+            background-color: grey;
+        }
+        b {
+            font-size: 18px;
+            color: white;
+            position: relative;
+            display: block;
+            top: 46%;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+
+        #pinContainer {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .panel {
+            /* height: 100%; */
+            width: 100%;
+            min-height: 380px;
+            padding: 50px;;
+            /* position: absolute; */
+        }
+
+        #pinMaster {
+            position: relative;
+        }
+
+        .blue {
+            background-color: #3883d8;
+            /* width: 100%; */
+        }
+        .turqoise {
+            background-color: #38ced7;
+            /* width: 50%;
+            left:50%; */
+        }
+        .bordeaux {
+            background-color: #953543;
+            /* width: 50%; */
+        }
+        .combined-panel{
+            position: relative;
+        }
+        .panel-b,
+        .panel-c{
+            /* position: absolute; */
+            display: block;
+        }
+    </style>
+    <!-- <script src="bower_components/jquery/jquery.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.14.2/TweenMax.min.js"></script>
+    <script src="bower_components/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js"></script>
+    <script src="bower_components/scrollmagic/scrollmagic/uncompressed/plugins/animation.velocity.js"></script>
+    <script src="bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
+    <script src="bower_components/scrollmagic/scrollmagic/uncompressed/plugins/jquery.ScrollMagic.js"></script>
+    <script src="bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script> -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.14.2/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/ScrollMagic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/plugins/animation.gsap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/plugins/debug.addIndicators.js"></script>
+</head>
+<body>
+    <div class="placeholder">
+        <b>Just a spacer</b>
+    </div>
+    
+    <div id="pinMaster">
+        <div id="pinContainer">
+            <section class="panel panel-a blue">
+                <b>Pin Panel A</b>
+            </section>
+            <section class="panel panel-b turqoise">
+                <b>Pin Panel B</b>
+            </section>
+            <section class="panel panel-c bordeaux">
+                <b>Pin Panel C</b>
+            </section>
+            
+        </div>
+    </div>
+
+    <div class="placeholder">
+            <b>Just a spacer</b>
+        </div>
+    <script>
+            TweenLite.defaultEase = Linear.easeNone;
+
+            var scale_tween = TweenMax.to('#scale-animation', 1, {
+                transform: 'scale(.75)',
+                ease: Linear.easeNone
+            });
+            var controller = new ScrollMagic.Controller();
+            var t1 = new TimelineMax();
+            t1.to("section.panel.panel-b", 1, {xPercent: 100});	
+            //t1.to("section.panel.panel-c", 1, {xPercent: -100});		
+    
+            new ScrollMagic.Scene({
+                triggerElement: ".panel-b",
+                triggerHook: "onLeave",
+                duration: "30%"
+            })
+            .setPin(".panel-b")
+            .setTween( t1 )
+            // .addIndicators({
+            //     colorTrigger: "white",
+            //     colorStart: "white",
+            //     colorEnd: "white",
+            //     indent: 40
+            // })
+            .addTo(controller);
+    
+        </script>
+</body>
+</html>

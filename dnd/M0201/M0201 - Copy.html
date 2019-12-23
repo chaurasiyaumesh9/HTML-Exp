@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>M0201</title>
+	  <script type="text/javascript" src="js/jquery-1.10.2.js">  </script>
+	  <script type="text/javascript" src="js/jQuery.dnd.js">  </script>
+	  <script type="text/javascript" src="js/jQuery.library.js">  </script>
+	  <script type="text/javascript" src="js/jQuery.M0201.js">  </script>
+	  <script type="text/javascript" src="js/jquery.transit.min.js">  </script>
+	  <link rel="stylesheet" href="css/magic.css">
+	  <link rel="stylesheet" href="css/jQuery.M0201.css">
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var library = new Library();
+		var settings ={
+			global:{
+				stageWidth:780,
+				stageBgColor:"#c0c0c0"
+			},
+			draggable:{
+				width:95,
+				height:95,
+				background:"#d1d110",
+				hideAfterDrop:false,
+				resizeOnDrag:{key:true,value:"0.9,0.75"},
+				rollover:true
+			},
+			droppable:{
+				responseBox : {
+					width:120,
+					height:130,
+					background:"#fcfcdc",
+					border:"5px solid #f1f2f3",
+					corner:10,
+					margin:5
+				},
+				responseText : {
+					width:120,
+					height:70,
+					backgroundActive:"#ffffff",
+					backgroundHover:"#ff0000"
+				},
+				orientation:"top",
+				showDropdowns:false
+			}
+		};
+		
+		//$("#demo-main-boundary-panel").M0201(settings);
+		$("#btnSubmit").click(function(){
+			
+			settings = getSettings();
+			console.log(settings);
+			$("#stage-M0201").detachM0201();
+			$("#stage-M0201").M0201(settings);
+		});
+
+		function getSettings(){
+			var obj = {
+				global:{},
+				draggable:{},
+				droppable:{
+					responseBox:{},
+					responseText:{}
+				}
+			};
+			obj.global["stageWidth"] = parseInt( $("#stage-width").val() );
+			obj.global["stageBgColor"] =  $("#stage-bgcolor").val() ;
+
+			obj.draggable["width"] = parseInt( $("#draggable-width").val() );
+			obj.draggable["height"] = parseInt( $("#draggable-height").val() );
+			obj.draggable["background"] = $("#draggable-bgcolor").val() ;
+			obj.draggable["hideAfterDrop"] = library.parseBool( $("#draggable-hide-after-drop").val() );
+			obj.draggable["resizeOnDrag"] = {};
+			obj.draggable["resizeOnDrag"]["key"] = library.parseBool( $("#draggable-resize-while-drag").val() );
+			obj.draggable["resizeOnDrag"]["value"] = $("#draggable-scalevalue").val() ;
+			obj.draggable["rollover"] = library.parseBool( $("#draggable-rollover").val() );
+			
+			obj.droppable.responseBox["width"] = parseInt( $("#droppable-box-width").val() );
+			obj.droppable.responseBox["height"] = parseInt( $("#droppable-box-height").val() );
+			obj.droppable.responseBox["background"] = $("#droppable-box-bgcolor").val() ;
+			obj.droppable.responseBox["border"] = $("#droppable-box-border").val() ;
+			obj.droppable.responseBox["corner"] = parseInt( $("#droppable-box-corner").val() );
+			obj.droppable.responseBox["margin"] = parseInt( $("#droppable-box-margin").val() );
+
+			obj.droppable.responseText["width"] = obj.droppable.responseBox["width"];
+			obj.droppable.responseText["height"] = parseInt( $("#droppable-text-height").val() );
+			obj.droppable.responseText["backgroundActive"] = $("#droppable-text-bgcolor").val() ;
+			obj.droppable.responseText["backgroundHover"] = $("#droppable-text-bgcolor-hover").val() ;
+			
+			obj.droppable["orientation"] = $("#droppable-droppable-orientation").val() ;
+			obj.droppable["showDropdowns"] = library.parseBool( $("#droppable-show-dropdown").val() );
+			
+			return obj;
+		}
+
+		$("#btnSubmit").trigger("click");
+	});
+
+	/*
+		Progress - { task pending M0201 }
+			1. Skinning
+			2. cards stack/un-stacked
+			3. click to fly
+			4. last undo
+			5. dropdown value if the content is in image format
+			6. All css styles to be parameterized
+			7. font properties to be parameterized in configuration page/settings
+			8. draggable background as gradient/image url format
+			9. appear multiple draggable on same droppable in un-stacked format
+			10. rollover amount to be parameterized 
+			11. z-index overlapping with droppable/draggable while being dropped
+			12. draggable properties [border-radius & border ] to be parameterized
+	*/
+	
+</script>
+
+ </head>
+ <body>
+	<div class="wrapper noselect">
+		
+		<div id="question" class="question">
+			<div id="" class="qtext">
+				Thinking about <u>XXXX</u>, please let us know how much do you agree to the following statements.
+			</div>	
+			<div id="stage-M0201" class="stage">
+				
+			</div>
+		</div>
+		<div id="configurationpage-M0201" class="configurationpage">
+			<div id="" class="modulecaption">
+				<h3>M0201 - Module Configuration</h3>
+			</div>
+			<div class="container-configurationpage">
+				<fieldset class="css-stage">
+					<legend>Stage</legend>
+					<table>
+						<tr>
+							<td><span class="caption">Stage Width :</span></td>
+							<td><input type="text" maxlength="10" id="stage-width" value="820" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Stage Background Color :</span></td>
+							<td><input type="color" maxlength="10" id="stage-bgcolor" value="#ffffff" /></td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset class="css-draggable">
+					<legend>Draggable</legend>
+					<table>
+						<tr>
+							<td><span class="caption">Width :</span></td>
+							<td><input type="text" maxlength="10" id="draggable-width" value="105" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Height :</span></td>
+							<td><input type="text" maxlength="10" id="draggable-height" value="115" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Background Color :</span></td>
+							<td><input type="color" maxlength="10" id="draggable-bgcolor" value="#f1601b" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Hide after being Dropped :</span></td>
+							<td>
+								<select id="draggable-hide-after-drop">
+									<option text="False" value="False" >False</option>
+									<option text="True" value="True" selected="true">True</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><span class="caption">Resize while drag :</span></td>
+							<td>
+								<select  id="draggable-resize-while-drag">
+									<option text="True" value="True"  >True</option>
+									<option text="False" value="False">False</option>
+								</select>
+								<input type="text" id="draggable-scalevalue" value="0.75" />
+							</td>
+						</tr>
+						<tr>
+							<td><span class="caption">Rollover effect</span></td>
+							<td>
+								<select id="draggable-rollover">
+									<option text="False" value="False" >False</option>
+									<option text="True" value="True" selected="true">True</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset class="css-droppable">
+					<legend>Droppable</legend>
+					<table>
+						<tr>
+							<td><span class="caption">Box Width :</span></td>
+							<td><input type="text" maxlength="10" id="droppable-box-width" value="110" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Box Height :</span></td>
+							<td><input type="text" maxlength="10" id="droppable-box-height" value="120" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Box Background Color :</span></td>
+							<td><input type="color" maxlength="10" id="droppable-box-bgcolor" value="#fdd889" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Box Border :</span></td>
+							<td><input type="text" id="droppable-box-border" value="5px solid #f1f2f3" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Box Corner :</span></td>
+							<td><input type="text" maxlength="10" id="droppable-box-corner" value="10" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Box Margin :</span></td>
+							<td><input type="text" maxlength="10" id="droppable-box-margin" value="0" /></td>
+						</tr>
+						
+						<tr>
+							<td><span class="caption">Text Holder Height :</span></td>
+							<td><input type="text" maxlength="10" id="droppable-text-height" value="55" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Text Holder Background Color :</span></td>
+							<td><input type="color" maxlength="10" id="droppable-text-bgcolor"  value="#ffffff" /></td>
+						</tr>
+						<tr>
+							<td><span class="caption">Text Holder Background Color While Hovered :</span></td>
+							<td><input type="color" maxlength="10" id="droppable-text-bgcolor-hover"  value="#faae0a" /></td>
+						</tr>
+
+						
+						<tr>
+							<td><span class="caption">Place Drop boxes at :</span></td>
+							<td>
+								<select id="droppable-droppable-orientation">
+									<option text="Top" value="Top" selected="true">Top</option>
+									<option text="Right" value="Right">Right</option>
+									<option text="Bottom" value="Bottom">Bottom</option>
+									<option text="Left" value="Left">Left</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><span class="caption">Show data dropdown :</span></td>
+							<td>
+								<select id="droppable-show-dropdown">
+									<option text="True" value="True" selected="true">True</option>
+									<option text="False" value="False" >False</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+			</fieldset>
+			</div>
+			
+		<!-- <input id="btnClear" type="button" value="load Default" /> -->
+		<input id="btnSubmit" type="button" value="Load Module" />
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+ </body>
+</html>

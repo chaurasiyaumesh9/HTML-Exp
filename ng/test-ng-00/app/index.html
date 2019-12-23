@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" ng-app="angularApp">
+ <head>
+  <meta charset="UTF-8">
+  
+  <title> ng-app </title>
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- <style type="text/css">
+	ul.testimonial-slider > li > .slide {
+		//max-height: 60px;
+		//overflow:hidden;
+	}
+  </style> -->
+ </head>
+ <body ng-controller="MainCtrl">
+
+	<div id="" class="jumbotron text-center">
+		<h1> {{ message }}</h1>
+	</div>
+	<div ng-view ></div>
+   <!-- <div class="container" >
+	<div class="testimonial">
+		<ul class="testimonial-slider">
+			<li > <div class="slide"><a href=""> You can never go wrong with a clutch envelope for the weekend cocktails!</a></div>  </li>
+			<li> <div class="slide"><a href="">A tip is to secure at least one bag for each of your major daily activities (work, casual evenings, travelling, parties, etc.) in neutral, versatile colours such as black, brown and white/cream.</a></div>  </li>
+			
+			<li> <div class="slide"><a href="">If you want to get the most out of your handbags then we recommend that you shop handbags in simple, timeless styles that cover your major daily activities.</a></div>  </li>
+			<li> <div class="slide"><a href="">A tote and hobo handbag are examples of classic everyday bag styles that you can take from day to evening.</a></div>  </li>
+			<li> <div class="slide"><a href="">Seven bags that every woman should have in her closet!
+			Structured tote bag for your day
+				Hobo bags  for movies and gossip
+				Casual messenger bag or sling for dropping in for a quick cup of coffee.
+				Laptop bag
+				Chic  clutch purses for the weekend cocktails
+				Pretty evening bags in a dark neutral (black) and light neutral (e.g. cream) that go with special occasions
+				Leather travel bags in a dark neutral (eg.black)
+			</a></div>  </li>
+			<li> <div class="slide"><a href="">Ask yourself these questions before shopping for your bag:
+				Do I need it as an accessory or for practical use?
+				How often will I be using the bag?
+				How practical is it? (For your lifestyle, activity you'll be carrying it to, will it accommodate all of your important belongings?)
+				Can I wear it with the rest of my outfits?
+			</a></div>  </li>
+			<li> <div class="slide"><a href="">One of the most important thing is to match your bag to your personality...it cannot be a misfit in your closet!</a></div>  </li>
+			<li> <div class="slide"><a href="">Personality match: If your personal style is sporty then pick a simple messenger, satchel or canvas handbag.</a></div>  </li>
+			<li> <div class="slide"><a href="">Personality match: If you are a Bohemian at heart then carry bags which are large, made of original material like real leather or suede. Perhaps bags that are a bit slouchy distressed or have a vintage look.</a></div>  </li>
+			<li> <div class="slide"><a href="">Personality match: If you're Classy you might want to choose medium-size genuine leather tote bag in neutral or nude colours. Preferably tailored in design.</a></div>  </li>
+			<li> <div class="slide"><a href="">Personality match: select your handbag that suits your personal style. This is important in defining your image! Look for details that are YOU but are versatile to wear with the rest of your closet.</a></div>  </li>
+			<li> <div class="slide"><a href="">As with any piece of clothing or accessory, your bag can either take off or add pounds to your body figure, depending on the bag's size, shape and where it falls on your body.</a></div>  </li>
+			<li> <div class="slide"><a href="">When you are carrying your bag, pay attention to where your bag falls on your body. It can draw attention to parts of your body you don't or do like!</a></div>  </li>
+			<li> <div class="slide"><a href="">you have a full or wide upper body, then you most likely have narrow hips.
+			Select bags that widen and add width to your lower body (hips and thighs). So choose a handbag that finishes off at below hipbone level. Carry cross body bags or messenger bags...</a></div>  </li>
+			<li> <div class="slide"><a href="">If you have a full or curvy lower bottom (hips, thighs), then you're likely a Pear or Hourglass.
+			Look for handbags that visually add volume around your upper body part. So opt for a bag style that finishes off around your upper bust and midsection.
+			 Leather shoulder bags at mid-riff length or longer bags but with narrow bodies are the best options.</a></div>  </li>
+			<li> <div class="slide"><a href="">If you are a size zero (or close!) avoids oversized bags as they'll only make your frame obviously smaller. So look for broad and unstructured handbags with details like tassels, fringes, straps, studs, etc. Think slouch and hobo.</a></div>  </li>
+			<li> <div class="slide"><a href="">If you are pleasantly plump, then go for bigger bags, preferably solid-colored and with vertical details to draw the eye up and down. Avoid carrying small bags as this will only emphasize your full-figure shape.</a></div>  </li>
+			<li> <div class="slide"><a href="">If you are short and petite, you need a bag scaled to your body size and height, so avoid humongous bag sizes unless you want to look shorter and smaller. If you're a Plus size, opt for medium-scaled bags, but look for details and shapes that are slimming.</a></div>  </li>
+			<li> <div class="slide"><a href="">Thumb rule for shopping for bags is to always keep your overall outfit balanced. This means, avoid mixing too many patterns in one, keep the rest simple if the evening bag or purse you're carrying is flashy or eye catching.</a></div>  </li>
+			<li> <div class="slide"><a href="">If you want to Look Classy but Trendy
+			You can never go wrong with a bag that matches your jewellery and/or shoes - evening out the overall colour scheme.</a></div>  </li>
+			<li> <div class="slide"><a href="">Create a Statement with a Bag
+			Wear an eye-catching (studded, fully beaded, colourful) bag with a plain and solid colored outfit.</a></div>  </li>
+			<li> <div class="slide"><a href="">Accessorize a Multi-Colored Dress or Top
+			Choose a bag in one of the colours in the print. If you see any pinks or reds in the print, pair it with a purse in any of those colours. 
+			You can also go for a completely neutral, basic bag to let your print clothing be the focal point of your outfit.</a></div>  </li>
+		</ul>
+	</div>
+  </div> 
+
+  <div class="container">
+	<div style="margin:45px auto 5px auto;">
+		<ul class="image-slider">
+			<li>
+				<div class="slide">
+					<a href="">
+						<img src="images/banner-1.jpg" width="811" height="450" border="0" alt="">
+					</a>
+				</div>
+			</li>
+			<li>
+				<div class="slide">
+					<a href="">
+						<img src="images/banner-6.jpg" width="811" height="450" border="0" alt="">
+					</a>
+				</div>
+			</li>
+			<li>
+				<div class="slide">
+					<a href="">
+						<img src="images/banner-7.jpg" width="811" height="450" border="0" alt="">
+					</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+  </div> -->
+
+  
+  <!-- <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script> -->
+  <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="scripts.js"></script>
+	<!-- <script type="text/javascript" src="js/adapty-slider.js"></script> -->
+  <!-- <style type="text/css">
+	.slide img{
+		max-width:100%;
+		max-height:100%;
+		height: auto;
+		width: auto;
+	}
+	.testimonial{
+		margin:45px auto 5px auto;
+		//width: 420px;height:270px;
+	}
+	.wrapper-slider > ul:after{
+		content:"";clear:both; display:block;
+	}
+	
+  </style>
+  <script type="text/javascript">
+	jQuery( document ).ready( function(){
+		jQuery('.testimonial-slider').adaptySlider({
+			width:420,
+			height:270,
+			activeSlide: 4, 
+			borders: true,
+			padding: { L: 5, R: 5},
+			maxHeight: 80,
+			duration: 2.5
+		});
+
+		jQuery('.image-slider').adaptySlider({
+			width:620,
+			height:450,
+			activeSlide: 1,
+			borders: true,
+			padding: { L: 5, R: 5},
+			duration: 2.5
+		})
+	});
+  </script> -->
+ </body>
+</html>

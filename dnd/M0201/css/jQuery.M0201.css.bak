@@ -1,0 +1,18 @@
+.wrapper{border:1px none #000000;padding:5px;margin:50px auto;}
+.wrapper .question{	float:left;max-width:100%;margin: 0 0 0 50px;box-shadow: 0 0 15px 5px #ffffff;	border-radius:10px;background:#fff;}
+.wrapper .question .qtext{	color:#000;font-weight:bold;font-family:Lucida sans unicode;font-size:14px;}
+.wrapper .configurationpage{border:2px solid #c0c0c0;float:left;margin:5px 5px 5px 60px;;padding:15px;border-radius:10px;box-shadow: 0 0 15px 5px #cccccc;}
+.wrapper .configurationpage .container-configurationpage{max-height:470px;overflow-Y:auto;overflow-X:hidden;}
+.wrapper .configurationpage .container-configurationpage fieldset{background:#000;border:none;}
+.wrapper .configurationpage .container-configurationpage fieldset table{border-bottom:1px solid #fff;width:100%;}
+.wrapper .configurationpage .container-configurationpage fieldset table td{padding:5px;}
+.wrapper .configurationpage .container-configurationpage fieldset table td select{margin:5px;}
+.wrapper .configurationpage .container-configurationpage fieldset table td .caption{max-width:165px;display:inline-block;font-size:12px;font-family:Georgia;font-weight:normal;color:#fff;}
+.wrapper .configurationpage .container-configurationpage fieldset input{box-shadow: 0 0 5px 2px #ffffff;border-radius:2px;border:none;outline:none;}
+.wrapper .configurationpage .container-configurationpage fieldset legend{color:#ff0000;font-weight:bold;}
+.wrapper .configurationpage .modulecaption{text-align:center;}
+.wrapper .configurationpage .modulecaption h3{color:#fff;}
+.clearfix{clear:both;}
+.noselect {-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+.trans{-webkit-transition: all 0.7s ease;-moz-transition: all 0.7s ease;transition: all 0.7s ease;}
+body{background:#000;}

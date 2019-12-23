@@ -1,0 +1,57 @@
+
+var app = angular.module('techApp', []);
+app.controller('techAppCtrl', function($scope) {
+ 
+	$scope.tabControllers = ['ctrl-scale','ctrl-rotate','ctrl-translate','ctrl-skew','ctrl-matrix'];
+
+
+}).controller('ctrl-scale',function($scope){
+	$scope.data = {
+		header:'scale',
+		content:"With time, computers are getting as smart as the human brain, and we have a new frontier of technology called cognitive computing. Cognitive systems can process natural language and unstructured data, and act on a particular situation based on its analysis of the data, just the way humans do. With its ability to interact more naturally with human beings than a traditional system, it is all set to impact businesses and economy in every corner of the globe. Start-ups, vendors, tradesmen, established organisations and many other professionals are utilising its potential to enrich their business and shape their future. With features like human-computer interaction, knowledge extraction, mapping, self-learning and pattern recognition; this new development is finding uses in many industries.<p style='color:orange;'>Government officials are sometimes unable to recall or access detailed information about a state or country's finances for several reasons, including, limited access to data or insufficient information. A financial transparency app can provide details about current government budgets or even a detailed comparison of the previous year's revenues and expenses with the current year. Hundreds of complex spreadsheets can be simplified into readable charts and bar graphs in which financial data could be segregated, by years, departments or divisions. This would save time, improve decision-making, and build trust and engagement with the public sector.</p>"
+	}
+}).controller('ctrl-rotate',function($scope){
+	$scope.data = {
+		header:'rotate',
+		content:"A government digital app marketplace is quite simply a digital storefront where governments can showcase their cloud-based applications for general public or internal use. The marketplace gives emerging civic technologists and startups a single platform to launch their innovations for the greater good of society.These apps could provide novel methods of engaging the public, having transparent systems, providing alerts and updates about new policies, declaring emergency conditions, providing identity verification, and more. Such applications would all be part of a single digital apps store, which would act as the one-stop shop for all citizens.Let's discuss the kinds of apps that could be part of the government digital marketplace:"
+	}
+}).controller('ctrl-translate',function($scope){
+	$scope.data = {
+		header:'translate',
+		content:'With time, computers are getting as smart as the human brain, and we have a new frontier of technology called cognitive computing. Cognitive systems can process natural language and unstructured data, and act on a particular situation based on its analysis of the data, just the way humans do. With its ability to interact more naturally with human beings than a traditional system, it is all set to impact businesses and economy in every corner of the globe. Start-ups, vendors, tradesmen, established organisations and many other professionals are utilising its potential to enrich their business and shape their future. With features like human-computer interaction, knowledge extraction, mapping, self-learning and pattern recognition; this new development is finding uses in many industries.'
+	}
+}).controller('ctrl-skew',function($scope){
+	$scope.data = {
+		header:'skew',
+		content:'With time, computers are getting as smart as the human brain, and we have a new frontier of technology called cognitive computing. Cognitive systems can process natural language and unstructured data, and act on a particular situation based on its analysis of the data, just the way humans do. With its ability to interact more naturally with human beings than a traditional system, it is all set to impact businesses and economy in every corner of the globe. Start-ups, vendors, tradesmen, established organisations and many other professionals are utilising its potential to enrich their business and shape their future. With features like human-computer interaction, knowledge extraction, mapping, self-learning and pattern recognition; this new development is finding uses in many industries.'
+	}
+}).controller('ctrl-matrix',function($scope){
+	$scope.data = {
+		header:'matrix',
+		content:'With time, computers are getting as smart as the human brain, and we have a new frontier of technology called cognitive computing. Cognitive systems can process natural language and unstructured data, and act on a particular situation based on its analysis of the data, just the way humans do. With its ability to interact more naturally with human beings than a traditional system, it is all set to impact businesses and economy in every corner of the globe. Start-ups, vendors, tradesmen, established organisations and many other professionals are utilising its potential to enrich their business and shape their future. With features like human-computer interaction, knowledge extraction, mapping, self-learning and pattern recognition; this new development is finding uses in many industries.'
+	}
+});
+
+app.directive('accordianTab', function () {
+	return {
+		restrict: 'EAC',
+		templateUrl: 'template/accordian.html',
+		link:function( $scope, element, attrs ){
+			
+			$subject = element.children('.subject');
+			$arrow = $subject.children('header').children('.arrow');
+			$arrow.click( function( e ){
+				$( this ).parents('.subject').parent().siblings().find('.content').removeClass('active');
+				$( this ).parents('.subject').parent().siblings().find('.header').find('.glyphicon').removeClass('glyphicon-menu-up').addClass('glyphicon-menu-down');
+				$( this ).children('span').toggleClass('glyphicon-menu-down glyphicon-menu-up');
+				$( this ).parents('.subject').children('.content').toggleClass('active');
+			});
+		}
+	};
+});
+
+app.filter('rawHtml', ['$sce', function($sce){
+  return function(val) {
+    return $sce.trustAsHtml(val);
+  };
+}]);

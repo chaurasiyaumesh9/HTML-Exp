@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <!-- https://css-tricks.com/examples/ShapesOfCSS/ 
+	http://jsfiddle.net/CxvNG/1/
+	http://anthonyterrien.com/knob/
+  -->
+  <title>Canvas with arc</title>
+   <style type="text/css">
+	.demo-main-boundary-panel{
+		background: none repeat scroll 0 0 #f8f8f8;
+		border: 1px solid blue;
+		margin:50px 0px 0px 50px;
+		width:900px;
+		height:710px;
+		position:relative;
+		text-align:center;
+	}
+	.dot{
+		width:20px;
+		height:20px;
+		background: none repeat scroll 0 0 #ee0000;
+		border-radius:50%;
+		cursor:pointer;
+
+	}
+	#myCanvas{
+		margin:15px auto;
+		border:1px none #000;
+	}
+	#dragger{
+		border-radius:50%;
+		cursor:pointer;
+	}
+  </style>
+  <script type="text/javascript" src="jquery-1.10.2.js">  </script>
+  <script>
+	$(document).ready(function(){
+		var canvas = document.getElementById('myCanvas');
+		var context = canvas.getContext('2d');
+		var x = canvas.width / 2;
+		var y = canvas.height / 2;
+		var radius = 160;
+		var tubeWidth = 6;
+		var startAngle = 0.1 * Math.PI, endAngle = 1.9 * Math.PI;
+		var ead = endAngle * (180/Math.PI), sad = startAngle * (180/Math.PI) ;
+		var counterClockwise = false;
+		var gotBoundary = false;
+
+
+		  context.beginPath();
+		  context.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+		  context.lineWidth = tubeWidth;
+		  // line color
+		  context.strokeStyle = '#d1d110';
+		  context.stroke();	
+
+		 var propertiesDragger = {
+			size:50,
+			backcolor: "#ee0000"
+		}
+
+		var dragger = byid('dragger') ;
+		var self,selfAndDocument = $(document);
+		var center = {
+			tubeWidth: tubeWidth,
+			x: canvas.offsetLeft + canvas.clientWidth/2  ,
+			y: canvas.offsetTop + canvas.clientHeight/2
+		};
+
+		dragger.style["width"] = propertiesDragger["size"] + "px";
+		dragger.style["height"] = propertiesDragger["size"] + "px";
+		dragger.style["background-color"] = propertiesDragger["backcolor"] ;
+
+		setPosition(center,dragger,0.15 * Math.PI,radius) ;
+
+		/*$("#centerdot").css({
+			position: "absolute",
+			left: center.x - $("#centerdot").width()/2 + "px",
+			top: center.y - $("#centerdot").height()/2 + "px"
+		});*/
+		$(dragger).on("mousedown touchstart",function(e){
+			self = $(this);
+			selfAndDocument.add(self);
+			gotBoundary = false;
+
+			$(document).on("mousemove touchmove", function(e){
+				var parentsOffset = self.offsetParent().offset() ;
+				var dy = e.pageY - parentsOffset.top - center.y ;
+				var dx = e.pageX - parentsOffset.left - center.x ;
+				var rad = Math.atan2(dy, dx ) ;
+				var degrees = rad * (180/Math.PI);
+				degrees = (parseInt(degrees < 0 ? 360.0 + degrees : degrees )) % 360;
+				
+				setPosition( center,dragger,rad,radius ) ;
+				
+				e.preventDefault();
+			});
+
+			$(selfAndDocument).on("mouseup touchend", function(e){
+				e.stopPropagation();
+				e.preventDefault();
+				$(this).unbind("mousemove touchmove mouseup touchend") ;
+				selfAndDocument.remove(self);
+				
+			});
+		});
+
+
+	});
+	
+  function setPosition(c,e,Q,r){
+	var obj = {};
+	obj["x"] = c.x + (r-c.tubeWidth/2)*(Math.cos(Q)) - e.clientWidth/2 ;
+	obj["y"] = c.y + (r-c.tubeWidth/2)*(Math.sin(Q)) - e.clientHeight/2 ;
+
+	e.style['position'] = 'absolute' ;
+	e.style['left'] = obj.x + "px";
+	e.style['top'] = obj.y + "px";
+  }
+
+  function byid(e){
+	return document.getElementById(e) ;
+  }
+    </script>
+ </head>
+ <body>
+  <div class="demo-main-boundary-panel">
+	<canvas id="myCanvas" width="500" height="500"></canvas>
+	<div id="dragger" ></div>
+  </div>
+ </body>
+</html>

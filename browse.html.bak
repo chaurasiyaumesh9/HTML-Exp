@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title> Browse Directory </title>
+  <script type="text/javascript">
+	  /*function getfolder(e) {
+		  debugger;
+		var files = e.target.files;
+		var path = files[0].webkitRelativePath;
+		var Folder = path.split("/");
+		console.log(Folder[0]);
+	  } 
+	  function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+		debugger;
+		// files is a FileList of File objects. List some properties.
+		var output = [];
+		for (var i = 0, f; f = files[i]; i++) {
+		  output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+					  f.size, ' bytes, last modified: ',
+					  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+					  '</li>');
+		}
+		document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+	  }
+	*/
+		function saveImageAs (imgOrURL) {
+			if (typeof imgOrURL == 'object')
+			  imgOrURL = imgOrURL.src;
+			window.win = open (imgOrURL);
+			setTimeout('win.document.execCommand("SaveAs")', 500);
+		  }
+	  window.addEventListener('load',function(){
+		//document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	  },false);
+
+	  
+</script>
+ </head>
+ <body>
+	<!-- <input type="file" id="flup" onchange="getfolder(event)" webkitdirectory mozdirectory msdirectory odirectory directory multiple /> -->
+	<!-- <input type="file" id="files" name="files[]" multiple />
+	<output id="list"></output> -->
+
+	<a HREF="javascript:void(0)" onclick="saveImageAs(document.anImage); return false;">save image</a>
+	<img name="anImage" src="test-cases/images/00kih8g.jpg" width="640" height="320" border="0" alt="">
+ </body>
+</html>

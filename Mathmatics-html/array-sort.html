@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+
+ <title>Array sort</title>
+  <script type="text/javascript" src="jquery-1.10.2.js"></script>
+
+<script type="text/javascript">
+window.onload = function(){
+	//array with string operations - fruits.sort() works just fine
+	var fruits = ["Banana", "Orange", "Apple", "Mango"]; 
+	console.log( fruits.sort() ); 
+
+	//array with numbers operations - numbers.sort() would produce the incorrect output. use numbers.sort(function(a, b){return a-b}) instead to get the correct output
+	var numbers = [40, 100, 1, 5, 25, 10]; 
+	console.log( numbers.sort(function(a, b){return a-b}) ); 
+
+	var things = ['word', 'Word', '1 Word', '2 words']; //sorting take place in order of numbers then uppercase letter then lowercase letters
+	console.log( things.sort() ); // ['1 Word', '2 Words', 'Word', 'word']
+
+	// array with objects operations -
+	var objs = [ 
+        { first_nom: 'Lazslo', last_nom: 'Jamf'     },
+        { first_nom: 'Pig',    last_nom: 'Bodine'   },
+        { first_nom: 'Pirate', last_nom: 'Prentice' }
+    ];
+	//console.log( objs );
+	console.log( objs.sort(dynamicSort("first_nom")) );
+	
+	var x = recur(2,3) ;
+	//console.log(" x : ", x);
+	//console.log( recur2(4) );
+	theFunction("John", "fireman");
+	//theFunction.apply([], ["Susan", "school teacher"]);
+	theFunction.call([], "Claude", "mathematician");
+
+	var obj = {};
+	obj.value = 10;
+	/** @param {...number} additionalValues */
+	obj.addValues = function(additionalValues) {
+	  for (var i = 0; i < arguments.length; i++) {
+		this.value += arguments[i];
+	  }
+	  return this.value;
+	};
+	// Evaluates to 30 because obj is used as the value for 'this' when
+	// obj.addValues() is called, so obj.value becomes 10 + 20.
+	//console.log( obj.addValues(20) );
+
+	var f = obj.addValues;
+	//console.log(f)
+	//console.log( f(20) );
+
+	//f.call(obj, 10, 20, 30);
+	//console.log(obj.value);
+
+	f.apply(obj, [10, 20, 30]);
+	console.log(obj.value);
+
+	/*var obj1 = { which : "obj1" },obj2 = { which : "obj2" };
+	execute.call(obj1, "dan", "stanhope");
+	execute.apply(obj2, ["dan", "stanhope"]);
+	execute("dan", "stanhope");*/
+
+
+	var clark = new Person( "Clark" , "Kent" );
+	//console.log( "clark : ",clark );
+	Superhero.prototype = Object.create( Person.prototype );
+	var superman = new Superhero( "Clark" ,"Kent" , ["flight","heat-vision"] );
+	console.log( superman );
+
+	/*var cnt = 0;
+	function a (){
+		cnt++;
+		$("#closure").html( cnt );
+	}*/
+
+	var a =(function(){
+		var cnt = 0; //a private variable act as global variable
+		return function(){
+			//method body
+			cnt++;
+			$("#closure").html( cnt );
+		};
+	})();
+
+	$("#btnclick").click( function(){
+		a();
+	});
+
+}
+
+var Person =  function( firstName , lastName ){
+ 
+  this.firstName = firstName;
+  this.lastName =  lastName;
+  this.gender = "male";
+ 
+};
+var Superhero = function( firstName, lastName , powers ){
+ 
+    // Invoke the superclass constructor on the new object
+    // then use .call() to invoke the constructor as a method of
+    // the object to be initialized.
+ 
+    Person.call( this, firstName, lastName );
+ 
+    // Finally, store their powers, a new array of traits not found in a normal "Person"
+    this.powers = powers;
+};
+function execute(arg1, arg2){
+    console.log(this.which, arg1, arg2);
+}
+
+function theFunction(name, profession) {
+    console.log("My name is " + name + " and I am a " + profession + ".");
+
+}
+
+var power = function (base, exponent) {
+	console.log("exponent : ",exponent) ;
+  if (exponent === 0) {
+    return 1;
+  } else {
+    return base * power(base, exponent - 1);
+  }
+}
+
+function recur2(num){
+	console.log(num)
+	if (num===0)
+	{
+		return 1;
+	}else{
+		return recur2(num-1);
+	}
+}
+
+function recur(base, exp){
+	var results;
+	
+	if (exp === 0)
+	{
+		return 1;
+	}
+	else
+	{
+		//console.log(base * recur(base, exp-1))
+		
+		results = base * recur(base, exp-1);
+		//console.log( results )
+	}
+	return results;
+}
+// fn(2,3)
+
+// 2* 2* 2* 1
+
+
+
+function dynamicArguments(){
+    var props = arguments;
+		console.log(props);
+}
+function dynamicSort(property) {
+    var sortOrder = 1;
+    
+	if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+</script>
+<style>
+	@keyframes bounce {
+	    0%   {top:10px;}
+	    10%  {top:50px;}
+	    20%  {top:115px;}
+	    30%  {top:230px;}
+	    40%  {top:345px;}
+	    50%  {top:435px;}
+	    60%  {top:370px;}
+	    70%  {top:320px;}
+	    80%  {top:285px;}
+	    90%  {top:260px;}
+	    100% {top:255px;}
+	}
+	@keyframes grow {
+	    0%   { 
+			transform:scale(0);
+	    }
+	    100% {
+	    	transform:scale(1);
+	    }
+	}
+
+	.container{
+		margin: 25px auto;
+		border:1px solid #eaeaea;
+		padding:15px;
+		height: 540px;
+		position:relative;
+	}
+	.ball{
+		width:110px;
+		height: 110px;
+		background:hsla(10,100%,50%,1);
+		border-radius: 50%;
+		//animation: bounce 5s linear 0s 1;
+		animation: grow 1s linear 0s infinite;
+		position:absolute;
+		top:10px;
+		left:10px;
+	}
+	.divider{
+		height:1px;
+		left:10px;
+		top: 545px;
+		right:240px;
+		max-width: 310px;
+		background: #000;
+		position:absolute;
+	}
+	.loader{
+		position:relative;
+		width: 100px;height: 100px;
+	}
+	.spin{
+		width: 0;
+	    border-width: 100px;
+	    border-color: #f00;
+	    border-style: solid;
+	    border-radius: 50%;
+	    left:0;top:0; position: absolute;
+	}
+	.progress{
+		width: 0;
+	    border-width: 90px;
+	    border-color: #0f0;
+	    border-style: solid;
+	    border-radius: 50%;
+	    left:0;top:0; position: absolute;
+	    
+	}
+</style>
+ </head>
+ <body>
+  <div id="closure" class="">
+	
+  </div>
+  <button id="btnclick" >click</button>
+
+  <div class="container">
+  	<!-- <div class="ball"></div> -->
+	<div class="loader">
+		<div class="spin"></div>
+  		<div class="progress"></div>
+	</div>
+  	
+  	<div class="divider"></div>
+  </div>
+ </body>
+</html>

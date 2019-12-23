@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app="angularApp">
+ <head>
+  <meta charset="UTF-8">
+  
+  <title> ng-app </title>
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+ </head>
+ <body ng-controller="MainCtrl">
+
+  <div class="container">
+	<input type="text" ng-model="color" placeholder="Enter a color" />
+	<hello-world></hello-world>
+
+	<!-- <div ng-include="'templates/myChildView.html'"></div> -->
+
+	<div my-shared-scope></div>
+	
+	<input type="text" ng-model="message" placeholder="Enter a message" />
+	<notification messagetype="{{ message }}"></notification>
+
+	<span>This is the textbox on the page</span>
+	<input type="text" ng-model="commentText"/>
+	<br/>
+	<span>This is the textbox on the directive</span>
+	<book-comment text="commentText"></book-comment>
+
+	<like-book like="likeFunction( star )"></like-book>
+  </div>
+	
+  
+  <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="scripts.js"></script>
+ </body>
+</html>

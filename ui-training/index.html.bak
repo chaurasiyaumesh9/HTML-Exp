@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+
+  <title> UI Training </title>
+  <script type="text/javascript">
+	function execute(){
+		
+	}
+  </script>
+ </head>
+ <body>
+  <form method="post" action="">
+	Enter message : <input type="text" name="msg" />
+	<input type="submit" value="Submit data" onClick="execute();" />
+  </form>
+ </body>
+</html>

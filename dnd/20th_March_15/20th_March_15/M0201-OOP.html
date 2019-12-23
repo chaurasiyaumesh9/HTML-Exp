@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>M0201 OOP Based</title>
+  <script type="text/javascript" src="jquery-1.10.2.js">  </script>
+  <script type="text/javascript" src="jQuery.dnd.js">  </script>
+  <link rel="stylesheet" href="magic.css">
+  
+<style type="text/css">
+	.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.trans{
+		-webkit-transition: all 0.7s ease;
+		-moz-transition: all 0.7s ease;
+		transition: all 0.7s ease;
+		 -webkit-transform: scale(0) !important;
+		 -moz-transform: scale(0) !important;
+		transform: scale(0) !important;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var settings ={
+			droppableOrientation:"top",
+			hideAfterDrop:false,
+			resizeOnDrag:{key:true,value:"0.9,0.75"},
+			showDropdowns:false
+		};
+		var entryPointObj = new M0201Main(settings);
+		entryPointObj.ModuleLoad();
+	});
+
+	/*
+		Progress - { task pending M0201}
+			1. Resizing should be equal to droppable container size while the cards being dropped on it {done}
+			2. Place the smooth transition while cards are dropped.
+			3. The dropdown change should reflect the cards appear on top of the scale.
+			4. Allow content as image as well as plain text/html format. {done}
+			5. Skinning
+			6. cards stack/un-stacked
+			7. click to fly
+			8. last undo
+			9. dropdown value if the content is image
+			10. css styles to be parameterized
+			11. onmouseover effect card
+	*/
+</script>
+
+  <script type="text/javascript">
+	function M0201att(entryPointClassObj,displayText,index){
+		var M0201att_selfObj = this;
+		this.entryPointClassObj = entryPointClassObj;
+		this.hitIndex = -1;
+		var libraryObj = new Library();
+		this.draggable = libraryObj.createElement("div") ;
+		this.draggable.appendTo(entryPointClassObj.draggableHolder);
+		
+		this.cssdraggable = { border:"2px none #a7a7a7",float: "left",borderRadius:"10px",margin:"5px",cursor:"pointer",background: "#d1d110",width:130,height:130 } ;
+		var attrdraggable = { class:"draggable noselect",id:"draggable_" + index };
+		var cssfont = {halign:"center",valign:"middle",fontSize:12,fontFamily:"verdana",fontWeight:"normal",fontStyle:"normal",fontColor:"#000",paddingTop:5,paddingRight:5,paddingBottom:5,paddingLeft:5} ;
+		this.draggable.css(this.cssdraggable);
+		this.draggable.attr(attrdraggable);
+		libraryObj.setTextFormat(this.draggable,cssfont,displayText);
+
+		this.draggable.find("img").on("dragstart",function(ev){
+			//ev.preventDefault();
+			return false; //prevent default for the images
+		});
+
+		this.heighlightOnHover = function(e,color){
+			$(e).css({
+				backgroundColor:color
+			});
+		};
+		this.clearAllHighlight = function(color,color2 ){
+			for (var i=0;i< this.entryPointClassObj.respWidgets.length;i++ )
+			{
+				var $droppabletext = this.entryPointClassObj.respWidgets[i].respbox;
+				$droppabletext.css({backgroundColor:color});
+				
+				var $droppablebox = this.entryPointClassObj.respWidgets[i].droppablebox;
+				$droppablebox.css({backgroundColor:color2});
+			}
+		};
+
+		var dragSettings = {dragAxis : "both", setBehaviorConstrainedToBoundaryPanel : false,
+			dragStart : function(){M0201att_selfObj.dragStart();},
+			dragMove : function(){M0201att_selfObj.dragMove();},
+			dragEnd : function(){M0201att_selfObj.dragEnd();}	};
+
+		this.draggable.makeDraggable(dragSettings);;
+		
+		this.dragStart = function(){
+			var $draggable = this.draggable ; //get draggable widget from current object
+			
+			if ( entryPointClassObj.defaults.resizeOnDrag.key ) 
+			{
+				
+				$draggable.css({transform:"translate(0,0) scale(" +entryPointClassObj.defaults.resizeOnDrag.value+ ")"});
+				
+			}else {
+				
+				$draggable.css({transform:"translate(0,0)"});
+			
+			}			
+			
+		};
+
+		this.dragMove = function(){
+			var $draggable = this.draggable ;
+			for (var i=0;i< this.entryPointClassObj.respWidgets.length;i++ )
+			{
+				this.clearAllHighlight(this.entryPointClassObj.respWidgets[i].cssrespbox.background, this.entryPointClassObj.respWidgets[i].cssdroppablebox.background ) ;
+				var $droppable = this.entryPointClassObj.respWidgets[i].respbox;
+				var $droppablebox = this.entryPointClassObj.respWidgets[i].droppablebox;
+				if ( libraryObj.collision($droppable,$draggable) || libraryObj.collision($droppablebox,$draggable)){
+					
+					if ( $droppable.attr("id").indexOf("droppablebox_")!=-1 ) {
+						
+						this.hitIndex = parseInt($droppable.attr("id").replace("droppablebox_","")) ;	
+					
+					}else if ( $droppable.attr("id").indexOf("droppabletext_")!=-1 ) {
+						
+						this.hitIndex = parseInt($droppable.attr("id").replace("droppabletext_","")) ;	
+					
+					}	
+					
+					this.heighlightOnHover($droppable,"#b4b40e");
+					break ;
+				}else{
+					this.hitIndex = -1;
+				}
+			}
+		};
+
+		this.dragEnd = function(){
+			this.clearAllHighlight( this.entryPointClassObj.respWidgets[0].cssrespbox.background, this.entryPointClassObj.respWidgets[0].cssdroppablebox.background) ;
+			var $draggable = this.draggable ;
+			var draggableIndex = parseInt($draggable.attr("id").replace("draggable_","")) ;
+			if (this.hitIndex == -1){
+				$draggable.attr({style:""}).css(this.cssdraggable).appendTo(this.entryPointClassObj.draggableHolder);
+				this.entryPointClassObj.finalData[draggableIndex] = 0;
+			}else{
+				var $droppable = $("#droppablebox_" + this.hitIndex ) ;
+				$draggable.css({position:"absolute",left:"50%",top:"50%",margin:""}).appendTo($droppable);
+				if ( !this.entryPointClassObj.defaults.hideAfterDrop ) 
+				{
+					var scaleX = ( $droppable.width()/$draggable.width() ).toFixed(2);
+					var scaleY = ( $droppable.height()/ $draggable.height() ).toFixed(2);
+					$draggable.css({transform:"translate(-50%,-50%) scale(" +scaleX+ ","+scaleY+")"});
+				}else {
+					$draggable.hide();
+					//$draggable.addClass('magictime puffIn');
+				}	
+				this.entryPointClassObj.finalData[draggableIndex] = this.hitIndex + 1; //store the finaldata
+				
+			}
+			
+			//console.log(this.entryPointClassObj.finalData);
+			//$draggable.addClass("trans");
+			this.setScaleData();
+		};
+		this.setScaleData = function(){
+			var sortedData = new Array(this.entryPointClassObj.responseArray.length);
+			for (var i=0;i<sortedData.length ;i++ )
+			{
+				sortedData[i] = [];
+			}
+			// sort collected data 
+			for ( var i=0;i< this.entryPointClassObj.finalData.length; i++ )
+			{
+				if ( this.entryPointClassObj.finalData[i] != null && this.entryPointClassObj.finalData[i] != "" && this.entryPointClassObj.finalData[i] != "undefined" && parseInt( this.entryPointClassObj.finalData[i] )!=0 )
+				{
+					var scaleValue = parseInt( this.entryPointClassObj.finalData[i] ) - 1;
+					sortedData[scaleValue].push(i) ;
+				}
+			}
+			//populate sorted data into dropodown
+			for (var i = 0; i<sortedData.length; i++ )
+			{
+				var dropdown = this.entryPointClassObj.respWidgets[i].dropdwon;
+				dropdown.find('option').remove();
+				//var zindex = 1;
+				for (var j=0;j<sortedData[i].length ;j++ )
+				{
+					dropdown.append($('<option>', { 
+						value: sortedData[i][j],
+						text : this.entryPointClassObj.attributeArray[sortedData[i][j]]
+					}));
+					//entryPointClassObj.attWidgets[sortedData[i][j]].draggable.css({'z-index':''});
+					//console.log(this.entryPointClassObj.attWidgets[sortedData[i][j]].draggable,',',zindex);
+					//this.entryPointClassObj.attWidgets[sortedData[i][j]].draggable.css({'z-index':zindex});
+					
+					//zindex ++;
+				}
+			}
+		};
+		
+	}
+	function M0201resp(entryPointClassObj,displayText,index){
+		var libraryObj = new Library();
+		this.entryPointClassObj = entryPointClassObj;
+		
+		this.holder = libraryObj.createElement("div") ;
+		this.respbox = libraryObj.createElement("div") ; //this is to show up the responseText
+		this.dropdwon = libraryObj.createElement("select") ;
+		
+		this.droppablebox = libraryObj.createElement("div") ;
+		
+
+		this.cssholder = {float: "left",border:"1px none #f00",margin:"5px"};
+		this.cssrespbox = { border:"5px solid #f1f2f3",position:"relative",borderRadius:"10px",background: "#fff",width:125,height:70 } ;
+		this.cssdropdown = {margin:"5px auto",display:"none",width:this.cssrespbox.width};
+		this.cssdroppablebox = { border:"5px solid #f1f2f3",position:"relative",borderRadius:"10px",background: "#fcfcdc",width:this.cssrespbox.width,height:105,margin:"5px auto" } ;
+		
+		if (entryPointClassObj.defaults.showDropdowns){
+			
+			this.cssdropdown["display"] = "block";
+		
+		}
+		
+		var table ;
+			
+		if ( entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "left" || entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "right" ) {
+				
+			table = "<table><tr><td></td><td></td><td></td></tr></table>";
+			
+		}else {
+				
+			table = "<table><tr><td></td></tr><tr><td></td></tr><tr><td></td></tr></table>";
+			
+		}
+			
+		this.holder.append(table);
+			
+		table = this.holder.find("table");
+			
+		if ( entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "left" )
+		{
+				
+			this.droppablebox.appendTo( table.find("tr").eq(0).find("td").eq(0) ) ;
+			this.respbox.appendTo( table.find("tr").eq(0).find("td").eq(1) ) ;
+			this.dropdwon.appendTo( table.find("tr").eq(0).find("td").eq(2) );
+		}else if (entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "right") {
+			this.dropdwon.appendTo( table.find("tr").eq(0).find("td").eq(0) );
+			this.respbox.appendTo( table.find("tr").eq(0).find("td").eq(1) ) ;
+				
+			this.droppablebox.appendTo( table.find("tr").eq(0).find("td").eq(2) ) ;
+		}else if ( entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "top" || entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "bottom" ) {
+											this.droppablebox.appendTo( table.find("tr").eq(0).find("td").eq(0) ) ;
+			this.respbox.appendTo( table.find("tr").eq(1).find("td").eq(0) ) ;
+			this.dropdwon.appendTo( table.find("tr").eq(2).find("td").eq(0) );
+			}
+		
+		if (entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "left" || entryPointClassObj.defaults.droppableOrientation.toLowerCase() == "right" )
+		{
+			if (entryPointClassObj.responseArray.length<=5)
+			{
+				this.cssholder["clear"] = "both";
+			}
+			this.cssrespbox["margin"] = "10px 5px 10px 5px";
+		}else{
+			this.cssrespbox["margin"] = "5px 10px 5px 10px";
+		}
+		
+		this.attrrespbox = { class:"droppabletext",id:"droppabletext_" + index };
+		this.attrdropdown = { class:"dropdown",id:"dropdown_" + index };
+		
+		this.attrdroppablebox = { class:"droppablebox",id:"droppablebox_" + index };
+		var cssfont = {halign:"center",valign:"middle",fontSize:12,fontFamily:"verdana",fontWeight:"normal",fontStyle:"normal",fontColor:"#000",paddingTop:5,paddingRight:5,paddingBottom:5,paddingLeft:5} ;
+
+		this.respbox.css(this.cssrespbox);
+		this.dropdwon.css(this.cssdropdown);
+		this.respbox.attr(this.attrrespbox);
+		this.dropdwon.attr(this.attrdropdown);
+		
+		this.droppablebox.attr(this.attrdroppablebox);
+		
+		this.holder.css(this.cssholder);
+		
+		this.droppablebox.css(this.cssdroppablebox);
+		
+
+		libraryObj.setTextFormat(this.respbox,cssfont,displayText);
+
+		this.holder.appendTo(entryPointClassObj.droppableHolder);
+
+		 this.dropdwon.on('change',function() {
+			 var _i = $('option:selected', this).attr('value') ;
+			//entryPointClassObj.attWidgets[_i].setScaleData();
+			 //entryPointClassObj.attWidgets[_i].draggable.css({'z-index':'999'});
+		});
+		
+	}
+
+	function M0201Main(options){
+		/*-----------Limitation--------*/
+		// 1. maximum 5 scale with maximum height & width of 110
+
+		this.defaults = {
+			droppableOrientation:"top",
+			hideAfterDrop:false,
+			resizeOnDrag:{key:false,value:0.75},
+			showDropdowns:false
+		};
+		this.defaults = $.extend(this.defaults,options);
+
+		this.root = $("#demo-main-boundary-panel");
+		this.responseArray = ["Strongly Agree","Agree","Neutral","Disagree","Strongly Disagree"];
+		this.attributeArray = ["Has fair prices","Has great deals/coupons","Offers a good value for the money","Has great tasting breakfast sandwiches","Has great tasting snacks","Has great tasting coffee","Has delicious baked goods","Has oven-toasted products","Has great tasting food for the afternoon","Has a wide variety of food items","Has foods that you can eat all day","Offers healthy food options","Always offers exciting new products"];
+		this.finalData = [ ] ;
+		this.backData = [ ] ;
+		this.attWidgets = [ ];
+		this.respWidgets =[ ] ;
+		var libraryObj = new Library();
+		this.draggableHolder = libraryObj.createElement("div") ;
+		this.droppableHolder = libraryObj.createElement("div") ;
+		var CSS_DROPPABLE_CONTAINER = {border:"1px none #000"};
+		var CSS_DRAGGABLE_CONTAINER = {border:"1px none #000"};
+
+		this.ModuleLoad = function(){
+			
+			if( this.defaults.droppableOrientation.toLowerCase() == "top" || this.defaults.droppableOrientation.toLowerCase() == "bottom" ){
+				CSS_DROPPABLE_CONTAINER["display"] = "table" ;
+				if(this.defaults.droppableOrientation.toLowerCase() == "top") {
+					this.droppableHolder.appendTo(this.root);	
+					this.draggableHolder.appendTo(this.root);	
+					CSS_DROPPABLE_CONTAINER["margin"] = "5px auto 70px auto" ;
+				}else if(this.defaults.droppableOrientation.toLowerCase() == "bottom") {
+					this.draggableHolder.appendTo(this.root);	
+					this.droppableHolder.appendTo(this.root);	
+					CSS_DROPPABLE_CONTAINER["margin"] = "70px auto 5px auto" ;
+				}
+				CSS_DRAGGABLE_CONTAINER["display"] = "inline-block" ;
+			}else if( this.defaults.droppableOrientation.toLowerCase() == "left" || this.defaults.droppableOrientation.toLowerCase() == "right" ) {
+				var table = "<table width='100%' style='width:100%;'><tr><td></td><td></td></tr></table>";
+				this.root.append(table);
+				var $table = this.root.find("table") ;
+				if ( this.defaults.droppableOrientation.toLowerCase() == "left" )
+				{
+					this.droppableHolder.appendTo( $table.eq(0).find("tr").eq(0).find("td").eq(0) );	
+					this.draggableHolder.appendTo( $table.eq(0).find("tr").eq(0).find("td").eq(1) );	
+					CSS_DRAGGABLE_CONTAINER["margin"] = "0 5px 0 70px" ;
+				}else{
+					this.droppableHolder.appendTo( $table.eq(0).find("tr").eq(0).find("td").eq(1) );	
+					this.draggableHolder.appendTo( $table.eq(0).find("tr").eq(0).find("td").eq(0) );
+					CSS_DROPPABLE_CONTAINER["margin"] = "0 5px 0 70px" ;
+				}
+				CSS_DROPPABLE_CONTAINER["display"] = "inline-block" ;
+				CSS_DRAGGABLE_CONTAINER["display"] = "inline-block" ;
+			}
+			this.droppableHolder.css( CSS_DROPPABLE_CONTAINER );
+			this.draggableHolder.css( CSS_DRAGGABLE_CONTAINER );
+
+			for (var i=0;i< this.attributeArray.length; i++ )	{
+				this.attWidgets[i] = new M0201att(this,this.attributeArray[i],i) ;
+			}
+		
+			for (var i=0;i< this.responseArray.length; i++ )	{
+				this.respWidgets[i] = new M0201resp(this,this.responseArray[i],i) ;
+			}
+			
+			this.root.css({position:"relative",width:"1064px",border:"1px solid blue",padding:"5px",margin:"50px auto"}).append("<div style='clear:both;'></div>");
+		}
+
+		
+	}
+  </script>
+
+  <script type="text/javascript">
+	function Library(){
+		this.createElement = function(e){
+			return $(document.createElement(e)) ;
+		};
+		
+		this.setTextFormat = function(e,obj,text){
+			var table = "<table width='100%' height='100%' style='width:"+e.width()+"px;height:"+e.height()+"px;'>";
+			table += "<tr>" ;
+			table += "<td width='100%' style='width:100%;text-align:"+obj.halign+";vertical-align:"+obj.valign+";font-size:"+obj.fontSize+"px;font-family:"+obj.fontFamily+";font-weight:"+obj.fontWeight+";font-style:"+obj.fontStyle+";color:"+obj.fontColor+";padding-top:"+obj.paddingTop+"px;padding-right:"+obj.paddingRight+"px;padding-bottom:"+obj.paddingBottom+"px;padding-left:"+obj.paddingLeft+"px;'>" ; 
+			table += text;
+			table += "</td>";
+			table += "</tr>";
+			table += "</table>";
+			$(e).html(table);
+			
+			$(e).find("img").css({width:"100%",height:"auto"	});
+			
+		}
+
+		this.collision = function (a,b){
+			//a - droppable , b - drggable
+			var Ax=$(a).offset().left;
+			var Ay=$(a).offset().top;
+
+			var Bx=$(b).offset().left + $(b)[0].getBoundingClientRect().width/2;
+			var By=$(b).offset().top + $(b)[0].getBoundingClientRect().height/2;
+
+			var Awidth = $(a)[0].getBoundingClientRect().width;
+			var Aheight = $(a)[0].getBoundingClientRect().height;
+
+			
+			var Bwidth = $(b)[0].getBoundingClientRect().width;
+			var Bheight = $(b)[0].getBoundingClientRect().height;
+			
+			var xOverlap = this.valueInRange(Ax, Bx, Bx ) || this.valueInRange(Bx, Ax, Ax + Awidth);
+			var yOverlap = this.valueInRange(Ay, By, By) || this.valueInRange(By, Ay, Ay + Aheight);
+			
+			return xOverlap && yOverlap;
+		};
+
+		this.valueInRange = function (x, min, max) {
+		  return x >= min && x <= max;
+		};
+	}
+	
+  </script>
+
+ </head>
+ <body>
+	<div id="demo-main-boundary-panel" class="demo-main-boundary-panel"></div>
+ </body>
+</html>

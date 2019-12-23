@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> file uploade JS </title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="setup">
+			<div class="picture-box">
+				<img src="" alt="" id="profile-pic">
+				<div class="layer">
+					<div class="cropper" ondragstart="return false;" ></div>
+				</div>
+			</div>
+			<hr class="divider">
+			<div class="buttons-set">
+				<input type="file" id="uploader" size="50" onchange="refreshPic()">
+				<button id="btn-upload-new"> Upload Picture </button>
+				<button id="btn-crop" onClick="doneCropping();"> Done Cropping </button>
+			</div>
+		</div>
+
+		<!-- <div class="canvas-setup">
+			<canvas id="cropping-tool" width="410" height="410"></canvas>
+		</div> -->
+	</div>
+	<script src="js/script.js"></script>
+</body>
+</html>

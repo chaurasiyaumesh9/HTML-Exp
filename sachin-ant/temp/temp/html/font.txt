@@ -1,0 +1,12 @@
+
+
+
+font-family: 'Dosis', sans-serif;           family=Dosis:400,500,700|
+
+font-family: 'Oswald', sans-serif;          Oswald:300,400,500,700|
+
+font-family: 'Roboto', sans-serif;          Roboto:300,400,700,900
+
+font-family: 'Playfair Display', serif;     Playfair+Display:400,700
+
+

@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Canvas Tutorial</title>
+<script src="jquery-1.10.2.js"></script>
+<style type="text/css">
+	body {
+        margin: 0px;
+        padding: 0px;
+      }
+	#canvas{
+		border:1px none #000000;
+		margin: 20px 20px 20px 0px;	
+		display:block;
+		float:right;
+	}
+	.hide{
+		display:none;
+	}
+	div#console{
+		display:none;
+	}
+</style>
+<script type="text/javascript">
+	(function(){
+		$.fn.hypocycloid = function(options){
+			var defaults = {
+				k:3,
+				animation:false
+			};
+			options = $.extend( {}, defaults, options );
+
+			$(this).each( function(){
+				$(this).css({border:"1px solid #000000"});
+				var mycanvas=$(this).get(0);
+				var context=mycanvas.getContext("2d");
+
+				function f(){
+					var w = mycanvas.width, h = mycanvas.height;
+					context.translate(w/2,h/2);
+					var rotateAngle=0.005;
+					var k =options.k;
+					var radius = w/2, radiusSmall = radius/k;
+					var cos = Math.cos,sin=Math.sin,pi=Math.PI;
+					
+					function draw(){
+						context.clearRect(-w/2,-h/2,mycanvas.width,mycanvas.height)	;
+						context.beginPath();
+						context.fillStyle="#878410";
+						var x = 0,y = 0;
+						for (var t=0;t<=2*pi;t+=0.01){
+							x = (radius - radiusSmall) * cos(t) + radiusSmall*cos( ( (radius - radiusSmall)/radiusSmall ) *t);
+							y = (radius - radiusSmall) * sin(t) - radiusSmall*sin( ( (radius - radiusSmall)/radiusSmall ) *t) ;
+							context.lineTo(x,y);
+						}
+						context.fill();
+						//context.stroke();
+						if (options.animation)
+						{
+							context.rotate(rotateAngle);
+							requestAnimationFrame(draw);
+						}
+						
+					}
+					
+					if (options.animation)
+					{
+						requestAnimationFrame(draw);
+					}else{
+						draw();	
+					}
+					
+				}
+				f();
+			});
+			
+			
+			return $(this);
+		};
+	})();
+
+	$(document).ready(function(){
+		$(".start").hypocycloid({k:3,animation:true});
+	});
+</script>
+
+<!-- <script type="text/javascript">
+	function f(){
+		var mycanvas=document.getElementById("can1");
+		var context=mycanvas.getContext("2d");
+		var w = mycanvas.width, h = mycanvas.height;
+		context.translate(w/2,h/2);
+		var rotateAngle=0.005;
+		var k =3;
+		var radius = w/2, radiusSmall = radius/k;
+		var cos = Math.cos,sin=Math.sin,pi=Math.PI;
+		
+		function draw(){
+			context.clearRect(-w/2,-h/2,mycanvas.width,mycanvas.height)	;
+			context.beginPath();
+			//context.fillStyle="hsl(10,50%, 50%)";
+			context.fillStyle="#878410";
+			
+			//context.arc(0,0,radius,0,2*Math.PI);
+			
+			var x = 0,y = 0;
+			//context.moveTo(radius,0);
+			for (var t=0;t<=2*pi;t+=0.01){
+				x = (radius - radiusSmall) * cos(t) + radiusSmall*cos( ( (radius - radiusSmall)/radiusSmall ) *t);
+				y = (radius - radiusSmall) * sin(t) - radiusSmall*sin( ( (radius - radiusSmall)/radiusSmall ) *t) ;
+				context.lineTo(x,y);
+				//context.stroke();
+			}
+			context.fill();
+			//context.stroke();
+			context.rotate(rotateAngle);
+			requestAnimationFrame(draw);
+		}
+		//draw();
+		
+		requestAnimationFrame(draw);
+		
+		
+		document.getElementById("increase").addEventListener("click",function(){
+			rotateAngle+=0.05;
+		},false);
+		
+		document.getElementById("decrease").addEventListener("click",function(){
+			rotateAngle-=0.05;
+		},false);
+	}
+	window.addEventListener("load",f,false);
+</script>
+ -->
+</head>
+
+<body>
+<div id="console" style="width:400px;height:600px;border:1px none #000000;overflow:auto;float:left;margin:20px 0px 20px 20px;overflow:auto;">
+	<table>
+	
+	</table>
+</div>
+	
+	<div id="canvas">
+    	 <button id="increase" class='hide'>+</button>
+	    <button id="decrease" class='hide'>-</button> 
+    	<canvas width="300" height="300" class='start'></canvas>
+		<canvas width="300" height="300" class='start'></canvas>
+		<canvas width="300" height="300" class='start'></canvas>
+		<canvas width="300" height="300" class='start'></canvas>
+		<canvas width="300" height="300" class='start'></canvas>
+		<canvas width="300" height="300" class='start'></canvas>
+    </div>
+    
+</body>
+</html>

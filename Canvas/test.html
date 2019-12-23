@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<script type="text/javascript">
+
+		var num = 5;
+		
+		function check(){
+			
+			console.log('check', num);
+			return num;
+		}
+
+		function check2(){
+			console.log('check2');
+		}
+
+		function init(){
+			loadAfter();
+		}
+
+
+		window.addEventListener('load', init , false);
+
+		var count = ( function(){
+			var n = 0;
+			return function(){
+				n++;
+				console.log(n);
+				return n;
+			}
+
+		})();
+
+
+		function loadAfter(){
+			document.getElementById('btn1').addEventListener('click', function(){
+				var cnt = count();
+				//var header = document.getElementById('header');
+				var header = document.getElementsByTagName('h1')[1];
+				header.innerHTML = "The Count Value is now : " + cnt;;
+				header.style.background = "#f00"
+			}, false);
+		}
+
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<h1 id="header"> Heading title 1</h1>
+		<h1 id="header"> Heading title 2 </h1>
+		<button id="btn1"> Click </button>
+	</div>
+</body>
+</html>

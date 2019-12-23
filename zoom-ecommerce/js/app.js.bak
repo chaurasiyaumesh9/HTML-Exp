@@ -1,0 +1,86 @@
+$( document ).ready( function(){
+	$('.more-views ul.thumbs > li > a').click( function(e){
+		e.preventDefault();
+		$( this ).parent().addClass('active').siblings().removeClass('active');
+		$('.img-wrapper').find('img').eq( $( this ).parent().index() ).addClass('visible').siblings().removeClass('visible');
+		$('.zoombox .zoombox-img-wrapper').find('img').eq(0).attr({src: $('.img-wrapper').find('img').eq( $( this ).parent().index() ).attr('src') });
+		loadZoom();
+	});
+	loadZoom();
+});
+
+function loadZoom(){
+	$('.img-wrapper img.visible').on('mouseover', function(e){
+		//$('.zoombox .zoombox-img-wrapper').find('img').eq(0).attr({src: $(this).attr('src') });
+		$('.zoombox').show();
+	}).on('mousemove', function(e){
+		
+		var _cX = e.pageX, _cY = e.pageY;
+		var _oX = $(this).offset().left, _oY = $(this).offset().top;
+		var pointer = { x: Math.round( _cX - _oX), y: Math.round( _cY - _oY) };
+		var ratioX =  $('.zoombox .zoombox-img-wrapper').find('img').eq(0).width()/$(this).width(), 
+		ratioY =  $('.zoombox .zoombox-img-wrapper').find('img').eq(0).height()/$(this).height();
+		var ratio = { x: ratioX, y: ratioY };
+		var pointerFinal = { x: Math.round( pointer.x * ratio.x ) , y: Math.round( pointer.y * ratio.y ) };
+		
+		$('.zoombox .zoombox-img-wrapper').find('img').eq(0).css({
+			'-webkit-transform': 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)',
+			'-moz-transform': 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)',
+			'-ms-transform': 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)',
+			'-o-transform': 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)',
+			'transform': 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)',
+		});
+		$('.zoombox .zoombox-img-wrapper').css({
+			'-webkit-transform': 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)',
+			'-moz-transform': 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)',
+			'-ms-transform': 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)',
+			'-o-transform': 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)',
+			'transform': 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)',
+		});
+		
+	}).on('mouseout', function(e){
+		$('.zoombox').hide();
+	});
+}
+
+function f(){
+	var wrapper = document.getElementById('img-wrapper');
+	var imgSmall = wrapper.getElementsByTagName('img')[0];
+	var zoombox = document.getElementById('zoombox');
+	var zoomboxImgWrapper = document.getElementById('zoombox-img-wrapper');
+	var imgBig = zoombox.getElementsByTagName('img')[0];
+	var ratioX =  imgBig.clientWidth/imgSmall.clientWidth, 
+		ratioY =  imgBig.clientHeight/imgSmall.clientHeight;
+	var ratio = { x: ratioX, y: ratioY };
+	//console.log( 'ratio : ', ratio );
+
+	imgSmall.addEventListener('mouseover', function(e){
+		zoombox.style['display'] = 'block';
+	}, false);
+
+	imgSmall.addEventListener('mousemove', function(event){
+		var _cX = event.clientX, _cY = event.clientY;
+		var _oX = imgSmall.offsetLeft, _oY = imgSmall.offsetTop;
+		var pointer = { x: _cX - _oX, y: _cY - _oY };
+		//console.log( 'pointer : ', pointer );
+		var pointerFinal = { x: Math.round( pointer.x * ratio.x ) , y: Math.round( pointer.y * ratio.y ) };
+		//console.log( 'pointerFinal : ', pointerFinal );
+		imgBig.style['transform'] = 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)';
+		imgBig.style['-webkit-transform'] = 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)';
+		imgBig.style['-moz-transform'] = 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)';
+		imgBig.style['-ms-transform'] = 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)';
+		imgBig.style['-o-transform'] = 'translate(-' + pointerFinal.x + 'px, -' + pointerFinal.y + 'px)';
+		
+		zoomboxImgWrapper.style['transform'] = 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)';
+		zoomboxImgWrapper.style['-webkit-transform'] = 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)';
+		zoomboxImgWrapper.style['-moz-transform'] = 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)';
+		zoomboxImgWrapper.style['-ms-transform'] = 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)';
+		zoomboxImgWrapper.style['-o-transform'] = 'translate(' + pointer.x + 'px, ' + pointer.y + 'px)';
+	}, false);
+
+	imgSmall.addEventListener('mouseout', function(e){
+		zoombox.style['display'] = 'none';
+		
+	}, false);
+	
+ }

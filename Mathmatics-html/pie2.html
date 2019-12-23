@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  
+  <title>piechart</title>
+  <!-- <script type="text/javascript">
+	
+	window.onload = function(){
+		var data = [120, 100, 140];
+		var labels = ["120", "100", "140"];
+		var colors = ["#FFDAB9", "#E6E6FA", "#E0FFFF"];
+		canvas = document.getElementById("piechart");
+		var context = canvas.getContext("2d");
+		for (var i = 0; i < data.length; i++) {
+			drawSegment(canvas, context, i);
+		}
+		function drawSegment(canvas, context, i) {
+			context.save();
+			var centerX = Math.floor(canvas.width / 2);
+			var centerY = Math.floor(canvas.height / 2);
+			radius = Math.floor(canvas.width / 2);
+
+			var startingAngle = degreesToRadians(sumTo(data, i));
+			var arcSize = degreesToRadians(data[i]);
+			var endingAngle = startingAngle + arcSize;
+
+			context.beginPath();
+			context.moveTo(centerX, centerY);
+			context.arc(centerX, centerY, radius,startingAngle, endingAngle, false);
+			context.closePath();
+
+			context.fillStyle = colors[i];
+			context.fill();
+			context.restore();
+			drawSegmentLabel(canvas, context, i);
+		}
+		function drawSegmentLabel(canvas, context, i) {
+		   context.save();
+		   var x = Math.floor(canvas.width / 2);
+		   var y = Math.floor(canvas.height / 2);
+		   var angle = degreesToRadians(sumTo(data, i));
+
+		   context.translate(x, y);
+		   context.rotate(angle);
+		   var dx = Math.floor(canvas.width * 0.5) - 10;
+		   var dy = Math.floor(canvas.height * 0.05);
+
+		   context.textAlign = "right";
+		   var fontSize = Math.floor(canvas.height / 25);
+		   context.font = fontSize + "pt Helvetica";
+
+		   context.fillText(labels[i], dx, dy);
+		   context.restore();
+		}
+		function degreesToRadians(degrees) {
+			return (degrees * Math.PI)/180;
+		}
+		function sumTo(a, i) {
+			var sum = 0;
+			for (var j = 0; j < i; j++) {
+			  sum += a[j];
+			}
+			return sum;
+		}
+	}
+	
+  </script> -->
+  <script type="text/javascript">
+	window.onload = function(){
+		var datalist= new Array(35, 35, 35, 35, 35, 35,35); 
+		var colist = new Array('blue', 'red', 'green', 'orange', 'gray', 'yellow','pink');
+		var canvas = document.getElementById("canvas3"); 
+		var ctx = canvas.getContext('2d');
+		pie(ctx, canvas.width, canvas.height, datalist); 
+		function pie(ctx, w, h, datalist)
+		{
+		  var radius = h / 2 - 5;
+		  var centerx = w / 2;
+		  var centery = h / 2;
+		  var total = 0;
+		  for(x=0; x < datalist.length; x++) { total += datalist[x]; }; 
+		  var lastend=0;
+		  var offset = Math.PI / 2;
+		  for(x=0; x < datalist.length; x++)
+		  {
+			var thispart = datalist[x]; 
+			ctx.beginPath();
+			ctx.fillStyle = colist[x];
+			ctx.moveTo(centerx,centery);
+			var arcsector = 2*Math.PI * (thispart / total);
+			ctx.arc(centerx, centery, radius, lastend - offset, lastend + arcsector - offset, false);
+			ctx.lineTo(centerx, centery);
+			ctx.fill();
+			ctx.closePath();		
+			lastend += arcsector;	
+
+		  }
+		}
+	};
+  </script>
+ </head>
+ <body>
+  <canvas id="piechart" width="400" height="400"></canvas>
+  <canvas id="canvas3" width="400" height="400"></canvas>
+ </body>
+</html>

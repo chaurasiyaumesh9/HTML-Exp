@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="jquery-1.10.2.js">  </script>
+  <script type="text/javascript" src="jQuery.library.js">  </script>
+  <title>Pizza using div</title>
+  <style type="text/css">
+	.demo-main-boundary-panel{
+		background: none repeat scroll 0 0 #f8f8f8;
+		border: 1px solid blue;
+		margin:50px auto;
+		width:900px;
+		height:710px;
+		position:relative;
+		text-align:center;
+	
+	}
+	.sb-container{
+		position:absolute;
+		left:50%;
+		top:50%;
+		width:120px;
+		height:280px;
+		transform-origin: 0% 100%;
+		cursor:pointer;
+		transition: all 700ms ease 0s;
+		border-radius:10px;
+	}
+	
+  </style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var library = new Library();
+		var defaults = {
+			startAngle: -95,
+			totalSwtch: 12
+		};
+
+		var gap = 180/defaults.totalSwtch;
+		var collapseAll = true;
+
+		var $stage = $(".demo-main-boundary-panel");
+		
+		for (var i=0; i<defaults.totalSwtch ;i++ )
+		{
+			var $sbContainer = library.createElement("div");
+			$sbContainer.addClass("sb-container");
+			$sbContainer.attr({id:"sb-container-" + i});
+			
+			library.setTextFormat($sbContainer,{halign:"center",valign:"middle",fontSize:14,fontFamily:"georgia",fontWeight:"bold",fontStyle:"normal",fontColor:"#ffffff",paddingTop:"0",paddingRight:"0",paddingBottom:"110",paddingLeft:"0"},"Book - " + (i+1));
+			
+			$sbContainer.css({
+				//backgroundImage:"url(http://tympanus.net/Tutorials/SwatchBook/images/fabric.png)"
+				backgroundColor:library.getRandomColor()
+			});
+
+			$sbContainer.click(clickSwatch);
+			$sbContainer.appendTo( $stage );
+			
+		}
+		//expandSwstches();
+		function expandSwstches(){
+			collapseAll = false;
+			var start = defaults.startAngle;
+			$("div.sb-container").each(function(){
+				$(this).css({
+					transform:"translate(0px,-250px) rotate("+ start +"deg)"
+				});
+				start += gap;
+			});
+		}
+
+		function collapseSwatches(){
+			collapseAll = true;
+			$("div.sb-container").each(function(){
+				$(this).css({
+					transform:"translate(0px,-250px) rotate(0deg)"
+				});
+			});
+		}
+		function clickSwatch(){
+			var $current = $(this);
+			var $prevAll = $(this).prevAll();
+			var $nextAll = $(this).nextAll();
+
+			if ($nextAll.length == 0)
+			{
+				if (collapseAll)
+				{
+					expandSwstches();
+				}else{
+					collapseSwatches();
+				}
+			}else{
+				$(this).css({
+					transform:"translate(0px,-250px) rotate(0deg)"
+				});
+				var cnt = 30;
+				$nextAll.each(function(){
+					$(this).css({
+						transform:"translate(0px,-250px) rotate("+cnt+"deg)"
+					});
+					cnt +=15;
+				});
+				cnt = -15;
+				$prevAll.each(function(){
+					$(this).css({
+						transform:"translate(0px,-250px) rotate("+cnt+"deg)"
+					});
+					cnt -=15;
+				});
+			}
+		}
+	});
+</script>
+ </head>
+ <body>
+  <div class="demo-main-boundary-panel">
+	
+  </div>
+ </body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <!-- 
+	http://jsfiddle.net/kevinPHPkevin/XN3ZB/314/
+	http://jsfiddle.net/u2h4J/2/
+	http://wickedlysmart.com/how-to-make-a-pie-chart-with-html5s-canvas/
+	http://www.mathopenref.com/arcsector.html
+  -->
+  <title>Pie</title>
+  <style type="text/css">
+	canvas{cursor:pointer;border:1px none #000;margin:150px auto;display:block;}
+  </style>
+  <script type="text/javascript" src="jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="rainbowvis.js"></script>
+  <script type="text/javascript">
+	$(document).ready(function(){
+		var M0504Obj = new M0504();
+		M0504Obj.LoadModule();
+	});
+
+	function doughnut(){
+		var ctx = this.canvas.getContext('2d');
+		ctx.clearRect ( 0, 0, this.canvas.width, this.canvas.height );
+		for (var k =0;k<2 ;k++ )
+		{
+			var lastend=0;
+			var offset = Math.PI / 2;
+			for(x=0; x < this.datalist.length; x++)
+			{
+				ctx.save();
+				var thispart = this.datalist[x]; 
+				ctx.beginPath();
+				if (k == 1)
+				{
+					ctx.fillStyle = "#fff";
+				}else{
+					var sliceGradient = ctx.createLinearGradient( 0, 0, this.canvas.width*0.75, this.canvas.height*0.75 );
+					sliceGradient.addColorStop( 0, this.sliceGradientColour );
+					var rgb = this.hexToRgb(this.colist[x]);
+					//var color = "rgba("+ rgb.r + ","+ rgb.g +","+ rgb.b +",0.2)";
+					color = "#e2e2e2";
+					if(x<=this.selectedIndex){
+						color = "rgba("+ rgb.r + ","+ rgb.g +","+ rgb.b +",1)";
+					}
+					sliceGradient.addColorStop( 1, color );
+					ctx.fillStyle = sliceGradient;	
+				}
+				ctx.moveTo(this.centerx,this.centery);
+				var arcsector = 2*Math.PI * (thispart / this.sumDataList);
+				// set angle data in 0-360 format
+				if (k == 0)
+				{
+					this.angleData[x] = {};
+					this.angleData[x].startAngle = Math.round( this.to360Form( this.toDegrees( lastend - offset ) ) );
+					this.angleData[x].endAngle = Math.round( this.to360Form( this.toDegrees ( lastend + arcsector - offset ) ) );
+					this.angleData[x].index = x;
+				}
+				
+				ctx.arc(this.centerx, this.centery,this.doughnutRadius[k], lastend - offset, lastend + arcsector - offset, false);
+				ctx.lineTo(this.centerx, this.centery);
+				ctx.fill();
+				if (k==1)
+				{
+					ctx.strokeStyle = "#fff";
+					ctx.lineWidth = 0;
+				}else{
+					ctx.strokeStyle = "#ffffff"; // to be parameterized
+					ctx.lineWidth = 2;
+				}
+		
+				ctx.stroke();
+				ctx.closePath();		
+				lastend += arcsector;	
+				ctx.restore();
+			}
+		}
+		this.angleData = this.angleData.sort(this.sortArrayOfObjects("startAngle"));
+		
+	}
+	function handleDoughnutClick(){
+		var M0504Obj = this;
+		var $canvas = $( this.canvas );
+		$canvas.click(function(clickEvent){
+			var mouseX = clickEvent.pageX - this.offsetLeft;
+			var mouseY = clickEvent.pageY - this.offsetTop;
+			
+			// Was the click inside the doughnut chart?
+			
+			var xFromCentre = mouseX - M0504Obj.centerx;
+			var yFromCentre = mouseY - M0504Obj.centery;
+
+			var distanceFromCentre = Math.sqrt( Math.pow( Math.abs( xFromCentre ), 2 ) + Math.pow( Math.abs( yFromCentre ), 2 ) );
+			if ( distanceFromCentre >= M0504Obj.doughnutRadius[1] && distanceFromCentre <= M0504Obj.doughnutRadius[0]) //length should be greater than small circle radius and less than big circle radius
+			{
+				//console.log(" inside part");
+				if ( distanceFromCentre <= M0504Obj.doughnutRadius[0] ) 
+				{
+					var clickAngle = M0504Obj.toDegrees (Math.atan2( yFromCentre, xFromCentre ) ); 
+					clickAngle = Math.round( M0504Obj.to360Form(clickAngle) ) ; // get angle data in 0-360 format
+			
+					for ( var slice in M0504Obj.angleData ) {
+					  if (M0504Obj.angleData[slice]['endAngle'] > M0504Obj.angleData[slice]['startAngle']) // check before compare if the start angle is smaller than end angle
+					  {
+						if ( clickAngle >= M0504Obj.angleData[slice]['startAngle'] && clickAngle <= M0504Obj.angleData[slice]['endAngle'] ) {
+							M0504Obj.selectedIndex = M0504Obj.angleData[slice]['index'];
+							break;
+						}
+					  }else{
+						if (clickAngle<M0504Obj.angleData[slice]['startAngle'])
+						{
+							clickAngle = 360 + clickAngle;
+						}
+						var startQ = M0504Obj.angleData[slice]['startAngle'];
+						var endQ = 360 + M0504Obj.angleData[slice]['endAngle'];
+						if ( clickAngle >= startQ && clickAngle <= endQ ) {
+							M0504Obj.selectedIndex = M0504Obj.angleData[slice]['index'];
+							break;
+						}
+					  }
+				  }
+				}
+				//console.log('selectedIndex : ',M0504Obj.selectedIndex);
+				doughnut.call(M0504Obj); 
+			}else{
+				return false;
+			}
+			
+		});
+	}
+
+	function pie(){
+		var ctx = this.canvas.getContext('2d');
+		var lastend=0;
+		var offset = Math.PI / 2;
+		for(x=0; x < this.datalist.length; x++)
+		{
+			ctx.save();
+			var sliceGradient = ctx.createLinearGradient( 0, 0, this.canvas.width*.75, this.canvas.height*.75 );
+			sliceGradient.addColorStop( 0, this.sliceGradientColour );
+			sliceGradient.addColorStop( 1, this.colist[x] );
+
+			var thispart = this.datalist[x]; 
+			ctx.beginPath();
+			ctx.fillStyle = sliceGradient;
+			ctx.moveTo(this.centerx,this.centery);
+			var arcsector = 2*Math.PI * (thispart / this.sumDataList);
+			this.angleData[x] = {};
+			
+			// set angle data in 0-360 format
+			this.angleData[x].startAngle = Math.round( this.to360Form( this.toDegrees( lastend - offset ) ) );
+			this.angleData[x].endAngle = Math.round( this.to360Form( this.toDegrees ( lastend + arcsector - offset ) ) );
+			this.angleData[x].index = x;
+
+			ctx.arc(this.centerx, this.centery,this.radius, lastend - offset, lastend + arcsector - offset, false);
+			ctx.lineTo(this.centerx, this.centery);
+			ctx.fill();
+			ctx.strokeStyle = "#fff";
+			ctx.lineWidth = 3;
+			ctx.stroke();
+			ctx.closePath();		
+			lastend += arcsector;	
+		    ctx.restore();
+		}
+		for(x=0; x < this.datalist.length; x++){
+			//drawSegmentLabel.call(this,ctx,x);
+		}
+
+		function drawSegmentLabel( context, i) {
+		   context.save();
+		 	var theta = this.toRadians( this.angleData[i].startAngle + (360/this.datalist.length/2) );
+			var dx = Math.round( this.centerx + 80 *Math.cos(theta) );
+			var dy = Math.round( this.centery + 80 *Math.sin(theta) );
+		   //context.textAlign = "left";
+		  //context.translate(x, y);
+		 //  context.rotate(Math.PI/6);
+		   var fontSize = 12;
+		   context.font = fontSize + "pt Helvetica";
+		   context.fillText( i+"  ",dx, dy);
+
+		   context.restore();
+		}
+		//console.log('before : ', this.angleData );
+		this.angleData = this.angleData.sort(this.sortArrayOfObjects("startAngle"));
+		//console.log('after : ', this.angleData );
+	}
+
+	function handlePieClick(){
+		var M0504Obj = this;
+		var $canvas = $( this.canvas );
+		$canvas.click(function(clickEvent){
+			var mouseX = clickEvent.pageX - this.offsetLeft;
+			var mouseY = clickEvent.pageY - this.offsetTop;
+			
+			// Was the click inside the pie chart?
+			
+			var xFromCentre = mouseX - M0504Obj.centerx;
+			var yFromCentre = mouseY - M0504Obj.centery;
+
+			var distanceFromCentre = Math.sqrt( Math.pow( Math.abs( xFromCentre ), 2 ) + Math.pow( Math.abs( yFromCentre ), 2 ) );
+			if ( distanceFromCentre <= M0504Obj.radius ) 
+			{
+				// Find the slice that was clicked by comparing angles relative to the chart centre.
+				
+				var clickAngle = M0504Obj.toDegrees (Math.atan2( yFromCentre, xFromCentre ) ); 
+				clickAngle = Math.round( M0504Obj.to360Form(clickAngle) ) ; // get angle data in 0-360 format
+		
+			  for ( var slice in M0504Obj.angleData ) {
+				  if (M0504Obj.angleData[slice]['endAngle'] > M0504Obj.angleData[slice]['startAngle']) // check before compare if the start angle is smaller than end angle
+				  {
+					  //console.log("if clickAngle : ",clickAngle)
+					if ( clickAngle >= M0504Obj.angleData[slice]['startAngle'] && clickAngle <= M0504Obj.angleData[slice]['endAngle'] ) {
+						console.log('if selectedIndex : ',M0504Obj.angleData[slice]['index']);
+						return;
+					}
+				  }else{
+						if (clickAngle<M0504Obj.angleData[slice]['startAngle'])
+						{
+							clickAngle = 360 + clickAngle;
+						}
+						//console.log("else clickAngle : ",clickAngle)
+						var startQ = M0504Obj.angleData[slice]['startAngle'];
+						var endQ = 360 + M0504Obj.angleData[slice]['endAngle'];
+						if ( clickAngle >= startQ && clickAngle <= endQ ) {
+							console.log('else selectedIndex : ',M0504Obj.angleData[slice]['index']);
+							return;
+						}
+				  }
+			  }
+			}
+		});
+	}
+
+	function M0504(){
+		//this.datalist= new Array(1, 1, 1, 1, 1, 1, 1); 
+		this.datalist = [];
+		//this.colist  = [];
+		this.colist = ["#fbe6e0","#ffd4cc","#ffc1b5","#ffaca0","#fe856f","#ff5d3a","#f61b1a","#fb1918","#eb0000","#d00c09"];
+		this.canvas = document.getElementById("myCanvas"); ;
+		this.radius = this.canvas.height / 2 - 5;
+		this.centerx = this.canvas.width / 2;
+		this.centery = this.canvas.height / 2;
+		this.angleData = [];
+		this.sliceGradientColour = "#ddd";  
+		this.sumDataList = 0;
+		this.doughnutRadius = [this.radius,70];
+		this.selectedIndex = -1;
+		var self = this;
+		var numberOfSegment = 15;
+		
+		this.LoadModule = function(){
+			//pie.call(this); 	
+			//handlePieClick.call(this); 
+			this.datalist = this.fillArray(1,numberOfSegment);
+			this.sumDataList = this.datalist.reduce(function(a, b) { return a + b });
+			//this.colist = this.getGradient("#fbe6e0","#dc0706",numberOfSegment);
+			doughnut.call(this); 
+			handleDoughnutClick.call(this);
+		}
+
+		this.toDegrees = function(radians){
+			return radians * (180/Math.PI)
+		};
+		this.toRadians = function(degrees){
+			return degrees * (Math.PI/180)
+		};
+		this.to360Form = function(degrees){
+			if(degrees < 0)	{
+				return 360 - (-degrees);
+			}else{
+				return degrees;
+			}
+		};
+		this.sortArrayOfObjects = function(property) {
+			var sortOrder = 1;
+			if(property[0] === "-") {
+				sortOrder = -1;
+				property = property.substr(1);
+			}
+			return function (a,b) {
+				var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+				return result * sortOrder;
+			}
+		};
+		this.hexToRgb = function (hex) {
+			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : null;
+		};
+		this.fillArray = function (value, len) {
+		  return Array.apply(null, new Array(len)).map(function(){return value}) ;
+		};
+		this.getGradient = function(startColor, endColor, numberOfItems){
+			var rainbow = new Rainbow(); 
+			rainbow.setNumberRange(1, numberOfItems);
+			rainbow.setSpectrum(startColor, endColor);
+			var s = [];
+			for (var i = 1; i <= numberOfItems; i++) {
+				var hexColour = rainbow.colourAt(i);
+				s[i-1] = '#' + hexColour ;
+			}
+			return s;
+		};
+	}
+  </script>
+ </head>
+ <body>
+  <canvas id="myCanvas" width="500" height="500"></canvas>
+ </body>
+</html>

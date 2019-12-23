@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5 Canvas - Animation - rotate polar curves</title>
+	<script>
+		(function(){
+
+		    function init(){
+		        var canvas = document.getElementsByTagName('canvas')[0];
+		        var c = canvas.getContext('2d');
+		        var n = 7;
+		        c.translate(400,400);
+		        var rotateAngle = 0.005;
+
+
+		        function draw(time){
+		            //console.log(time);
+		            c.clearRect(-400,-400,canvas.width,canvas.height); //since we have moved the origin to the center of the context, the middle of the context will be considered as 0,0
+		            c.beginPath();
+		            c.fillStyle = 'hsl(205,100%,50%)';
+		            c.moveTo(400,0);
+
+		            for(var angle=0; angle <2*Math.PI;angle+=0.01){
+		                var x = 400*Math.cos(n*angle)*Math.cos(angle);
+		                var y = 400*Math.cos(n*angle)*Math.sin(angle);
+		                c.lineTo(x,y);
+		            }
+		            //c.stroke();
+		            c.fill();
+		            c.rotate(rotateAngle);
+		            requestAnimationFrame(draw);
+		        }
+
+		        requestAnimationFrame(draw);
+
+		        function speedUpdate(factor){
+		            rotateAngle = factor*rotateAngle;
+		        }
+
+		        var increaseButton = document.getElementById('increaseButton');
+		        increaseButton.addEventListener('click',function(){speedUpdate(2);},false);
+
+		        var decreaseButton = document.getElementById('decreaseButton');
+		        decreaseButton.addEventListener('click',function(){speedUpdate(0.5);},false);
+
+		    }
+
+		//invoke function init once document is fully loaded
+		    window.addEventListener('load',init,false);
+
+		}()); //self invoking function
+	</script>
+</head>
+<body>
+	<canvas width="800" height="800"></canvas>
+	<button id="increaseButton"> + </button>
+	<button id="decreaseButton"> - </button>
+</body>
+</html>

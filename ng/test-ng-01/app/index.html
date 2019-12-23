@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" ng-app="angularApp">
+ <head>
+  <meta charset="UTF-8">
+  
+  <title> ng-app </title>
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style type="text/css">
+
+	.bottom{
+		bottom:15px;right:15px;position:absolute;
+	}
+	.test{
+		position:relative;margin:250px auto 5px auto;
+		height:1220px;
+	}
+  </style>
+ </head>
+ <body ng-controller="MainCtrl">
+	
+	<div class="container slider">
+		<img ng-repeat="slide in slides" ng-hide="!isCurrentSlideIndex($index)" class="slide" ng-src="{{slide.image}}">
+		<a class="arrow prev" href="#" ng-click="nextSlide()"> Next </a>
+		<a class="arrow next" href="#" ng-click="prevSlide()"> Prev </a>
+		<nav class="nav">
+			<div class="wrapper">
+				<ul class="dots">
+					<li class="dot" ng-repeat="slide in slides">
+						<a href="#" ng-class="{'active':isCurrentSlideIndex($index)}" ng-click="setCurrentSlideIndex($index);"> {{slide.description}} </a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+
+  
+	
+  
+  <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <!-- <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script> -->
+  <script type="text/javascript" src="scripts.js"></script>
+ </body>
+</html>

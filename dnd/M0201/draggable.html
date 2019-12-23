@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="js/jquery-1.10.2.js">  </script>
+	 <script type="text/javascript" src="js/jQuery.dnd.js">  </script>
+  <title> Draggable </title>
+
+  <script type="text/javascript">
+	$(document).ready(function(){
+		$('.box').makeDraggable({
+			dragAxis: "both",
+			setBehaviorConstrainedToBoundaryPanel : false,
+			dragStart : function(){},
+			dragMove : function(){},
+			dragEnd : function(){}
+		});
+	});
+
+		
+	
+</script>
+<style type="text/css">
+	*{margin:0;padding:0;box-sizing:border:box;}
+	html,body{height:100%;}
+	.wrapper{width:100%;min-height:100%;}
+	.box{
+		width:200px;
+		height:200px;
+		
+		margin:25px;
+	}
+	.red{
+		background:#ff3300;
+	}
+	.green{
+		background:#ccff99;
+	}
+  </style>
+ </head>
+ <body>
+  <div id="" class="wrapper">
+	<div id="" class="box red"></div>
+	<div id="" class="box green"></div>
+  </div>
+ </body>
+</html>

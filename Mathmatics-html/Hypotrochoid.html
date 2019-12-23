@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Canvas Tutorial</title>
+<script src="jquery-1.11.2.min.js"></script>
+<style type="text/css">
+	body {
+        margin: 0px;
+        padding: 0px;
+      }
+	#canvas{
+		border:1px none #000000;
+		margin: 20px 20px 20px 0px;	
+		display:block;
+		float:right;
+	}
+</style>
+<script type="text/javascript">
+	function f(){
+		var mycanvas=document.getElementsByTagName("canvas")[0];
+		var context=mycanvas.getContext("2d");
+		context.translate(400,400);
+		var rotateAngle=0.005;
+		var k =5;
+		var petalHeight = 400;
+		var radius = 250, radiusSmall = radius/k;
+		var cos = Math.cos,sin=Math.sin,pi=Math.PI;
+		var d = 70;
+		
+		function draw(){
+			context.clearRect(-400,-400,mycanvas.width,mycanvas.height)	;
+			context.beginPath();
+			//context.fillStyle="hsl(10,50%, 50%)";
+			context.fillStyle="#d7d70b";
+			
+			//context.arc(0,0,radius,0,2*Math.PI);
+			
+			var x = 0,y = 0;
+			//context.moveTo(radius,0);
+			for (var t=0;t<=2*pi;t+=0.01){
+				x = (radius - radiusSmall) * cos(t) + d *cos( ( (radius - radiusSmall)/radiusSmall ) *t);
+				y = (radius - radiusSmall) * sin(t) - d *sin( ( (radius - radiusSmall)/radiusSmall ) *t) ;
+				context.lineTo(x,y);
+				//context.stroke();
+			}
+			context.fill();
+			//context.stroke();
+			context.rotate(rotateAngle);
+			//requestAnimationFrame(draw);
+		}
+		draw();
+		
+		//requestAnimationFrame(draw);
+		
+		
+		document.getElementById("increase").addEventListener("click",function(){
+			rotateAngle+=0.05;
+		},false);
+		
+		document.getElementById("decrease").addEventListener("click",function(){
+			rotateAngle-=0.05;
+		},false);
+	}
+	window.addEventListener("load",f,false);
+</script>
+
+</head>
+
+<body>
+<div id="console" style="width:400px;height:600px;border:1px none #000000;overflow:auto;float:left;margin:20px 0px 20px 20px;overflow:auto;">
+	<table>
+	
+	</table>
+</div>
+	
+	<div id="canvas">
+    	 <button id="increase">+</button>
+	    <button id="decrease">-</button> 
+    	<canvas width="800" height="800"></canvas>
+    </div>
+    
+</body>
+</html>

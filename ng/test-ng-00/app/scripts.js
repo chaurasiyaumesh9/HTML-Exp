@@ -1,0 +1,97 @@
+var app = angular.module('angularApp', ['ngRoute']);
+
+app.config(function( $routeProvider, $locationProvider ) {
+	$routeProvider
+		.when('/viewA', {
+			templateUrl : '/views/viewA.html',
+			controller:'viewA'
+		})
+		.when('/viewB', {
+			templateUrl : '/views/viewB.html',
+			controller:'viewB'
+		});
+		
+});
+
+app.controller('viewA', function( $scope ){
+	$scope.message = "View A";
+});
+app.controller('viewB', function( $scope ){
+	$scope.message = "View B";
+});
+
+
+app.controller('MainCtrl', function( $scope ){
+	 $scope.customer = {
+        name: 'David',
+        street: '1234 Anywhere St.'
+    };
+	$scope.message = "Product Created!";
+	$scope.likeFunction = function( star ) {
+		alert("I like the book!, and gave " + star + " star.");
+	}
+});
+//app.directive('helloWorld', function() {
+//  return {
+//      restrict: 'AE',
+//      replace: true,
+//      template: '<h1>Hello World!!</h1>'
+//  };
+//});
+
+app.directive('mySharedScope', function(){
+	return {
+		template: 'Name: {{customer.name}}<br /> Street: {{customer.street}}'
+	}
+});
+app.directive("notification", function() {
+    return {
+        restrict: 'E',
+		replace:true,
+        scope: {
+            messagetype: '@'
+        },
+        template: '<div class="jumbotron text-center alert"><h1>{{ messagetype }}</h2></div>'
+    }
+});
+
+app.directive("bookComment", function() {
+    return {
+        restrict: 'E',
+			replace:true,
+        scope: {
+            text: '='
+        },
+        template: '<input type="text" ng-model="text"/>'
+    }
+});
+
+app.directive("likeBook", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            like: '&'
+        },
+        template: '<input type="text" ng-model="starCount" placeholder="Enter rate count here"/><br/><input type="button" ng-click="like({star: starCount})" value="Like"/>'
+    }
+})
+
+
+app.directive('helloWorld', function() {
+  return {
+    restrict: 'AE',
+    replace: true,
+    template: '<p style="background-color:{{color}}">Hello World',
+    link: function(scope, elem, attrs) {
+      elem.bind('click', function() {
+        elem.css('background-color', 'white');
+        scope.$apply(function() {
+          scope.color = "white";
+        });
+      });
+      elem.bind('mouseover', function() {
+        elem.css('cursor', 'pointer');
+      });
+    }
+  };
+});

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Circle</title>
+  <!-- 
+	http://jsfiddle.net/CvnMw/14/
+	http://photouploads.com/?v=capturoso.png
+	http://jsfiddle.net/U2tPJ/6/
+	https://css-tricks.com/examples/ShapesOfCSS/
+  -->
+  <!-- <script type="text/javascript">
+  <!--
+	//	var canvas = document.getElementById('myCanvas');
+//	var context = canvas.getContext('2d');
+//
+//	// centre or center for US :) the drawing
+//	var x = canvas.width / 2;
+//	var y = canvas.height / 2;
+//
+//	// number of days
+//	var days = 7;
+//
+//	// number of hours
+//	var hours = 5;
+//
+//	// one segment represents an hour so divide degrees by hours
+//	var segmentWidth = 360 / hours; //is equal to 2*Math.PI / segments needed - segment = hours in our case
+//
+//	// begin at 0 and end at one segment width
+//	var startAngle = 0;
+//	var endAngle = segmentWidth;
+//
+//	// how thick you want a segment
+//	var segmentDepth = 30;
+//
+//	function init(){
+//		for(var i=1; i <= days; i++) {
+//			drawSegments(i*segmentDepth);
+//		} 
+//	}
+//
+//	function drawSegments(radius) {   
+//		for(var i = 0; i < hours; i++){         
+//		  context.beginPath();
+//		  context.arc(x, y, radius, (startAngle * Math.PI / 180), (endAngle * Math.PI / 180), false);
+//		  context.lineWidth = segmentDepth;
+//		  context.strokeStyle = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+//		  context.stroke();
+//
+//		  // increase per segment        
+//		  startAngle += segmentWidth;
+//		  endAngle += segmentWidth;
+//		}
+//	}
+//
+//	// start drawing our chart
+//	init();
+		
+  //-->
+
+</script>
+  <script type="text/javascript" src="jquery-1.10.2.js">  </script>
+
+  <style type="text/css">
+	.box{
+		width:265px;
+		height:265px;
+		background-color:#eded1d ;
+		border: 1px none #aa0000;
+		color: #ffcccc;
+		font-size: 12px;
+		text-align: center;
+		margin:50px auto;
+		border-radius:50%;
+	}
+	.demo-main-boundary-panel{
+		background: none repeat scroll 0 0 #f8f8f8;
+		border: 1px solid blue;
+		margin:50px 0px 0px 50px;
+		width:900px;
+		height:710px;
+		position:relative;
+		text-align:center;
+	}
+	.dot{
+		width:20px;
+		height:20px;
+		background: none repeat scroll 0 0 #ee0000;
+		border-radius:50%;
+		cursor:pointer;
+	}
+	
+  </style>
+
+  <style type="text/css">
+	#circle-outer{
+		border: 1px none #aa0000;
+		margin:50px auto;
+		border-radius:50%;
+		cursor:pointer;
+	}
+	#circle-inner{
+		border: 1px none #aa0000;
+		border-radius:50%;	
+	}
+	#dragger{
+		border-radius:50%;
+		cursor:pointer;
+	}
+  </style>
+  <script type="text/javascript">
+  window.onload = function(){
+  	
+	/*
+	var box = byid('box1') ;
+	var centerdot = byid('centerdot') ;
+	var radius = box.clientWidth/2 ;
+
+	var center = {
+		x: box.offsetLeft + box.clientWidth/2 - centerdot.clientWidth/2,
+		y: box.offsetTop + box.clientHeight/2 - centerdot.clientHeight/2
+	};
+
+	centerdot.style['position'] = 'absolute' ;
+	centerdot.style['left'] = center.x + "px";
+	centerdot.style['top'] = center.y + "px";
+		
+	var points = 10;
+	var slice = 2 * Math.PI/ 10;
+	for (var i=0 ;i<points ;i++ )
+	{
+		var theta = i*slice ;
+		var obj = {};
+		 obj["x"] = center.x + radius*(Math.cos(theta));
+		 obj["y"] = center.y + radius*(Math.sin(theta));
+
+		 var point = document.createElement('div') ;
+		 point.style['position'] = 'absolute' ;
+		point.style['left'] = obj.x + "px";
+		point.style['top'] = obj.y + "px";
+		point.setAttribute('class','dot')
+		box.appendChild(point) ;
+	}
+	*/
+  }
+
+  $(document).ready(function(){
+	
+	var propertiesCircleOuter = {
+		size: 320,
+		backcolor: "#d1d110"
+	};
+	var propertiesCircleInner = {
+		backcolor: "#f8f8f8"
+	};
+
+	var propertiesDragger = {
+		size:50,
+		backcolor: "#ee0000"
+	}
+	var circleOuter = byid('circle-outer') ;
+	var circleInner = byid('circle-inner') ;
+	var dragger = byid('dragger') ;
+	var radius;
+	var tubeWidth = 6; //circleOuter.clientWidth/2 - circleInner.clientWidth/2 ;
+	var self,selfAndDocument = $(document);
+	
+
+	circleOuter.style["width"] = propertiesCircleOuter["size"] + "px";
+	circleOuter.style["height"] = propertiesCircleOuter["size"] + "px";
+	circleOuter.style["background-color"] = propertiesCircleOuter["backcolor"] ;
+	
+	circleInner.style["width"] = propertiesCircleOuter["size"] - (tubeWidth*2) + "px";
+	circleInner.style["height"] = propertiesCircleOuter["size"] - (tubeWidth*2) + "px";
+	circleInner.style["background-color"] = propertiesCircleInner["backcolor"] ;
+	circleInner.style['transform'] = "translate("+tubeWidth+"px, "+tubeWidth+"px)" ;
+
+	dragger.style["width"] = propertiesDragger["size"] + "px";
+	dragger.style["height"] = propertiesDragger["size"] + "px";
+	dragger.style["background-color"] = propertiesDragger["backcolor"] ;
+
+
+	var center = {
+		tubeWidth: tubeWidth,
+		x: circleOuter.offsetLeft + circleOuter.clientWidth/2  ,
+		y: circleOuter.offsetTop + circleOuter.clientHeight/2
+	};
+	radius = circleOuter.clientWidth/2 ;
+	var theta = Math.PI ;
+	setPosition(center,dragger,theta,radius) ;
+
+	$(dragger).on("mousedown touchstart",function(e){
+		self = $(this);
+		selfAndDocument.add(self);
+
+		$(document).on("mousemove touchmove", function(e){
+			var parentsOffset = self.offsetParent().offset() ;
+			var dy = e.pageY - parentsOffset.top - center.y ;
+			var dx = e.pageX - parentsOffset.left - center.x ;
+			var angle = Math.atan2(dy, dx )* (180/Math.PI);	
+			if(angle < 0)	{
+				angle = 360 - (-angle);
+			}
+			var thetaQ = angle * (Math.PI/180);
+			setPosition(center,dragger,thetaQ,radius) ;
+			e.preventDefault();
+		});
+
+		$(selfAndDocument).on("mouseup touchend", function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			$(this).unbind("mousemove touchmove mouseup touchend") ;
+			selfAndDocument.remove(self);
+		});
+	});
+
+	$(circleOuter).on("click touchstart",function(e){
+		var parentsOffset = $(dragger).offsetParent().offset() ;
+		var dy = e.pageY - parentsOffset.top - center.y ;
+		var dx = e.pageX - parentsOffset.left - center.x ;
+		var angleEnd = Math.atan2(dy, dx )* (180/Math.PI);	
+		if(angleEnd < 0)	{
+			angleEnd = 360 - (-angleEnd);
+		}
+		angleEnd = angleEnd * (Math.PI/180);
+		setPosition(center,dragger,angleEnd,radius) ;
+		e.stopPropagation();
+	});
+
+	$(circleInner).on("click touchstart",function(e){
+		e.stopPropagation();
+	});
+
+  });
+
+	
+  function setPosition(c,e,Q,r){
+	var obj = {};
+	obj["x"] = c.x + (r-c.tubeWidth/2)*(Math.cos(Q)) - e.clientWidth/2 ;
+	obj["y"] = c.y + (r-c.tubeWidth/2)*(Math.sin(Q)) - e.clientHeight/2 ;
+
+	e.style['position'] = 'absolute' ;
+	e.style['left'] = obj.x + "px";
+	e.style['top'] = obj.y + "px";
+  }
+
+  function byid(e){
+	return document.getElementById(e) ;
+  }
+  </script>
+ </head>
+ <body>
+  <div class="demo-main-boundary-panel">
+	<div id = "circle-outer" >
+		<div id = "circle-inner" ></div>
+	</div>
+	<div id="dragger" ></div>
+	
+
+	<div id="centerdot" class="dot" style='display:none;'></div>
+	
+	
+</div>
+
+ </body>
+</html>

@@ -1,0 +1,16 @@
+$( document ).ready( function(){
+	$(".wrapper section.content-wrapper .form-container .panel ul.responses > li .response").click(function(e){
+		$(this).parent().siblings().children('.response').removeClass('active');
+		$(this).toggleClass('active');
+	});
+
+	$(".wrapper section.content-wrapper .form-container .panel ul.responses > li .response.w140").click(function(e){
+		if ( $(this).hasClass('active') )
+		{
+			$(".wrapper section.content-wrapper .form-container .employment").addClass("auto-height");
+		}else{
+			$(".wrapper section.content-wrapper .form-container .employment").removeClass("auto-height");
+		}
+		
+	});
+} );

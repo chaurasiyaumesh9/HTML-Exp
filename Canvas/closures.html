@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> Closures </title>
+	<script type="text/javascript">
+		var IncreaseCounter = (function(){
+			var counter = 0;
+			return function(){
+				counter++;
+				console.log('counter : ',counter);
+			};
+		})();
+		
+		window.addEventListener('load',ExecuteOnLoad,false);
+		function ExecuteOnLoad(){
+			try{
+				var buttons = document.getElementsByClassName('button');
+				for( var i=0;i<buttons.length; i++){
+					var button = buttons[i];
+					(function(index){
+						button.addEventListener('click',function(){
+							console.log('clicked : ',(index+1))
+						},false);;
+					})(i);
+					// button.addEventListener('click',function(){
+					// 	console.log('clicked : ',i)
+					// },false);;
+				}
+				
+			}catch(ex){
+				console.log('EXCEPTION IN EXECUTEONLOAD : ',ex.message);
+			}
+			
+		}
+	</script>
+</head>
+<body>
+	<button id="increase" onClick="IncreaseCounter();"> Increase </button>
+
+	<button class="button" > 1 </button>
+	<button class="button" > 2 </button>
+	<button class="button" > 3 </button>
+	<button class="button" > 4 </button>
+	<button class="button" > 5 </button>
+</body>
+</html>

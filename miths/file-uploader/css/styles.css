@@ -1,0 +1,66 @@
+
+
+.setup{
+	/*border:1px solid #eaeaea;*/
+	padding:10px;
+	max-width:480px;
+	margin: 0 auto;
+}
+
+.setup .picture-box{
+	border:1px solid #eaeaea;
+	width:410px;height:410px;
+	margin: 0 auto;
+	position: relative;
+}
+.setup .picture-box img{
+	max-width:100%;
+	max-height: 100%;
+	height:auto;
+	width:auto;
+	position: absolute;
+	left:0;
+	top:0;
+	bottom: 0;
+	right: 0;
+	margin: auto auto;
+}
+.setup .picture-box .layer{
+	position: absolute;
+	left:0;
+	top:0;
+	bottom: 0;
+	right: 0;
+	margin: auto auto;
+	opacity: 0;
+	transition:0.5s;
+	background: rgba(0,0,0,1);
+}
+.setup .picture-box .layer.active{
+	opacity: 0.5;
+}
+.setup .picture-box .layer.active .cropper{
+	width:160px;
+	height:160px;
+	border:2px dotted #fff;
+	position: absolute;
+	left:0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto auto;
+	background: rgba(255,255,255,0.5);
+    cursor: move;
+}
+.setup hr.divider{
+	height:1px;display: block;background: #eaeaea;border: 0 none;
+}
+.setup .buttons-set{
+	text-align: center;
+}
+
+.canvas-setup canvas{
+	border:1px solid #eaeaea;
+	display: block;
+	margin:0 auto;
+}

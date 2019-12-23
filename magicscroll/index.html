@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> MAGIC SCROLL WITHOUT PLUGIN</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body,
+        html {
+            height: 100%;
+            min-height: 100%;
+            font-size: 16px;
+            font-weight: normal;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #f0f0ee;
+            margin: 0px;
+            padding: 0;
+        }
+        .wrapper{
+            overflow-x: hidden;
+            min-height: 100%;
+        }
+        body{
+            padding-bottom: 200px;
+            overflow-x: hidden;
+        }
+        .placeholder {
+            height: 100vh;
+            background-color: grey;
+            padding: 50px;;
+        }
+        b {
+            font-size: 18px;
+            color: white;
+            position: relative;
+            display: block;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+
+        #pinContainer {
+            width: 100%;
+            position: relative;
+        }
+        .panel {
+            width: 100%;
+            min-height: 380px;
+            padding: 50px;;
+        }
+        .panel-a{
+            min-height: 480px;;
+        }
+
+        #pinMaster {
+            position: relative;
+        }
+
+        .blue {
+            background-color: #3883d8;
+        }
+        .turqoise {
+            background-color: #38ced7;
+        }
+        .bordeaux {
+            background-color: #953543;
+        }
+        .combined-panel{
+            position: relative;
+        }
+        .combined-panel::after{
+            content: "";
+            display: block;
+            clear: both;
+        }
+        /* .combined-panel.active .panel-b,
+        .combined-panel.active .panel-c{
+            transform:translate(0,0);
+        }*/
+        .combined-panel .panel-b{
+            transform:translate(-100%,0);
+        }
+        .combined-panel .panel-c{
+            transform:translate(100%,0);
+        } 
+        .combined-panel .panel-b,
+        .combined-panel .panel-c{
+             display: flex;
+             align-items: center;
+             float: left;
+             width: 50%;
+             transition: transform 0.5s;
+        }
+        
+        .combined-panel .panel-b b,
+        .combined-panel .panel-c b{
+            flex:1;
+        }
+        .combined-panel .panel-b,
+        .combined-panel .panel-c{
+            height: 680px;
+        }
+    </style>
+    <script>
+        
+        window.addEventListener('load',function(){
+            /*var geo = window.navigator.geolocation;
+            var location = {};
+            if( geo && geo.getCurrentPosition ){
+                geo.getCurrentPosition((p)=>{
+                    document.getElementById('lattitude').innerHTML = p.coords.latitude;
+                    document.getElementById('longitude').innerHTML = p.coords.longitude;
+
+                    location.latitude = p.coords.latitude;
+                    location.longitude = p.coords.longitude;
+                });
+                setTimeout(function(){
+                    console.log("coords : ",location)
+                },10)              
+            }*/
+
+            var geolocation = (function() {
+                'use strict';
+
+                var geoposition;
+                var options = {
+                    maximumAge: 1000,
+                    timeout: 15000,
+                    enableHighAccuracy: false
+                };
+
+                function _onSuccess (callback, position) {
+                    console.log('DEVICE POSITION');
+                    console.log('LAT: ' + position.coords.latitude + ' - LON: ' +  position.coords.longitude);
+                    geoposition = position
+                    callback();
+                };
+
+                function _onError (callback, error) {
+                    console.log(error)
+                    callback();
+                };
+
+                function _getLocation (callback) {
+                    navigator.geolocation.getCurrentPosition(
+                    _onSuccess.bind(this, callback),
+                    _onError.bind(this, callback), 
+                    options
+                    );
+                }
+
+                return {
+                    location: _getLocation  
+                }
+
+            }());
+            geolocation.location(function () {
+             console.log('finished, loading app.');
+            });
+
+        },false);
+       window.addEventListener('scroll',function(e){
+           var triggerPoint = document.getElementById('combined-panel');
+           var viewportStatus = elementInViewportPartial( triggerPoint );
+           var leftSlide = triggerPoint.getElementsByClassName('panel-b')[0],
+                    rightSlide = triggerPoint.getElementsByClassName('panel-c')[0];
+            var percentageTobeShown = 100 - viewportStatus.percentage;
+           if( viewportStatus.isVisible ){
+
+               leftSlide.style['transform'] = 'translate(-'+percentageTobeShown+'%,0)';
+               rightSlide.style['transform'] = 'translate('+percentageTobeShown+'%,0)';
+           }else{
+                leftSlide.style['transform'] = 'translate(-100%,0)';
+                rightSlide.style['transform'] = 'translate(100%,0)';
+           }
+       }, false);
+
+       function elementInViewportCompletely(el) {
+            var top = el.offsetTop;
+            var left = el.offsetLeft;
+            var width = el.offsetWidth;
+            var height = el.offsetHeight;
+
+            while(el.offsetParent) {
+                el = el.offsetParent;
+                top += el.offsetTop;
+                left += el.offsetLeft;
+            }
+            return (
+                top >= window.pageYOffset &&
+                left >= window.pageXOffset &&
+                (top + height) <= (window.pageYOffset + window.innerHeight) &&
+                (left + width) <= (window.pageXOffset + window.innerWidth)
+            );
+        }
+        
+
+       function elementInViewportPartial(el) {
+            var top = el.offsetTop;
+            var left = el.offsetLeft;
+            var width = el.offsetWidth;
+            var height = el.offsetHeight;
+            var deduct = 0,   percentage = 0;
+
+            while(el.offsetParent) {
+                el = el.offsetParent;
+                top += el.offsetTop;
+                left += el.offsetLeft;
+            }
+            var isVisible = top < (window.pageYOffset + window.innerHeight) &&
+                left < (window.pageXOffset + window.innerWidth) &&
+                (top + height) > window.pageYOffset &&
+                (left + width) > window.pageXOffset;
+            
+                if (top < window.pageYOffset) {
+                    deduct += (window.pageYOffset - top);
+                }
+                if ((top + height) > (window.pageYOffset + window.innerHeight)) {
+                    deduct += (top + height) - (window.pageYOffset + window.innerHeight);
+                }
+                if (deduct > height) {
+                    deduct = height;
+                }
+                percentage = Math.round(((height - deduct) / height) * 100);
+            return {
+                isVisible: isVisible,     
+                percentage: percentage           
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="placeholder">
+            <b>Just a spacer</b>
+        </div>
+        <div id="location">
+            <div id="lattitude"></div>
+            <div id="longitude"></div>
+        </div>
+        <div id="pinMaster">
+            <div id="pinContainer">
+                <section class="panel panel-a blue">
+                    <b>Pin Panel A</b>
+                </section>
+                <section class="combined-panel" id="combined-panel">
+                    <section class="panel panel-b turqoise">
+                        <b>Pin Panel B</b>
+                    </section>
+                    <section class="panel panel-c bordeaux">
+                        <b>Pin Panel C</b>
+                    </section>
+                </section>
+            </div>
+        </div>
+    
+        <div class="placeholder">
+            <b>Just a spacer</b>
+        </div>
+    </div>
+</body>
+</html>

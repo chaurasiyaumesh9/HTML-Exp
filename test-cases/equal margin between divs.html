@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+   <title>equal margin between divs</title>
+  <script type="text/javascript" src="jquery-1.10.2.js">  </script>
+  <script type="text/javascript">
+	$( document ).ready( function(){
+		//recalc( $('.wrapper-inner'), $('.box') );
+	} );
+	function recalc( parentElement, childElement)
+	{
+		var parent = parentElement.width();
+		var box = childElement.width();
+		var columns = Math.floor(parent /box);
+		var space = (parent - (box * columns)) / columns;
+		$(childElement).css('margin-left', space/2);
+		$(childElement).css('margin-right', space/2);
+	}
+  </script>
+  <style type="text/css">
+	*{ margin:0; padding:0; box-sizing:border-box;}
+	body,html{height:100%;}
+	.wrapper{width:100%;height:100%;background:#ffcc66;padding:5px; }
+	.wrapper .wrapper-inner{width:100%;overflow:auto;background:#ccffff;display: block;min-width: 480px;}
+	.wrapper .wrapper-inner .box{width:150px; float:left;height:100px;background:blue;color:#fff;margin-bottom:20px;text-align: center;}
+
+	@media (max-width: 480px) {
+	  .wrapper .wrapper-inner > span {
+		margin-right: 15px;
+	  }
+	  .wrapper .wrapper-inner > span:nth-child(3n) {
+		margin-right: 0;
+	  }
+	}
+	@media (min-width: 480px) and (max-width: 645px) {
+	  .wrapper .wrapper-inner > span {
+		margin-right: calc((100% - 450px)/2 - 0px);
+	  }
+	  .wrapper .wrapper-inner > span:nth-child(3n) {
+		margin-right: 0;
+	  }
+	}
+	@media (min-width: 645px) and (max-width: 810px) {
+	  .wrapper .wrapper-inner > span {
+		margin-right: calc((100% - 600px)/3 - 0px);
+	  }
+	  .wrapper .wrapper-inner > span:nth-child(4n) {
+		margin-right: 0;
+	  }
+	}
+	@media (min-width: 810px) and (max-width: 975px) {
+	  .wrapper .wrapper-inner > span {
+		margin-right: calc((100% - 750px)/4 - 0px);
+	  }
+	  .wrapper .wrapper-inner > span:nth-child(5n) {
+		margin-right: 0;
+	  }
+	}
+	@media (min-width: 975px) {
+	  .wrapper .wrapper-inner > span {
+		margin-right: calc((100% - 900px)/5 - 0px);
+	  }
+	  .wrapper .wrapper-inner > span:nth-child(6n) {
+		margin-right: 0;
+	  }
+	}
+
+  </style>
+ </head>
+ <body>
+  <div id="" class="wrapper">
+	<div id="" class="wrapper-inner">
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+		<span id="" class="box">Box </span>
+	</div>
+  </div>
+ </body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  
+  <title> HTML5 Video </title>
+  <!-- <script type="text/javascript">
+			window.onload = Execute;
+			function Execute(){
+				console.log('Execute');
+				var repeat = false;
+				var video = document.getElementById("bgvid");
+				video.play();
+				video.muted = true;
+		
+				video.addEventListener('ended', ended, false);
+				video.addEventListener('timeupdate', timeupdate, false);
+		
+				function ended(){
+					console.log('ended ');
+					video.style['display'] = 'block';
+					if(!repeat){
+						video.currentTime = 0;
+						video.play();
+						repeat = true;
+					}
+					video.muted = false;
+				}
+		
+				function timeupdate(){
+					console.log('timeupdate - ',video.buffered.end(0));
+					var value;
+					try{
+						//value = parseInt((100 / video.duration) * video.currentTime);
+						value = Math.round( (100 / video.duration) * video.buffered.end(0) );
+						document.getElementById('progressText').innerHTML = value + '%';
+						if(!repeat && value == 100){
+							document.getElementById('loading').style['display'] = 'none';
+							document.getElementById('progressText').style['display'] = 'none';
+							ended();
+						}
+					}
+					catch(ex){
+						console.log('erroer : ',ex.message);
+					}
+					 console.log('value : ',value);
+					 
+				}
+			}
+		  </script> -->
+		  <style type="text/css">
+			.blank{display:block;}
+		  </style>
+
+		  <script type="text/javascript">
+			window.addEventListener('load', function(){
+				for ( var i=2; i<= 100 ;i++ )
+				{
+					//isPrime( i );
+				}
+				p();
+			}, false); 
+			
+			function p(){
+				for (var i=5; i>=0 ;i-- )
+				{
+					for (var j=0;j<i ;j++ )
+					{
+						var star = document.createElement('span');
+						star.innerHTML = ' * ';
+						star.setAttribute('class','content');
+						document.body.appendChild( star );
+					}
+					var blacnk = document.createElement('span');
+					blacnk.setAttribute('class','blank');
+					document.body.appendChild( blacnk );
+				}
+			}
+			
+			
+			
+
+
+			var closureExample = ( function(){
+				var count = 0;
+				return function(){
+					return count++;
+				}
+			})();
+
+			console.log( closureExample() );
+			console.log( closureExample() );
+			console.log( closureExample() );
+			console.log( closureExample() );
+			
+
+			function isPrime( num ){
+				var cnt = 0;
+				for ( var i=2; i<=num ; i++ )
+				{
+					
+					if ( num%i == 0 )
+					{
+						cnt++;
+					}
+				}
+				if ( cnt == 1)
+				{
+					console.log( num );
+				}
+			}
+		  </script>
+		  <style type="text/css">
+			.box{
+				height:30px;
+				margin:5px auto;
+			}
+			.box1{
+				background: #f00;
+			}
+			.box2{
+				background: #0f0;
+			}
+			.box3{
+				background: #00f;
+			}
+			.box4{
+				background: #009966;
+			}
+		  </style>
+ </head>
+ <body>
+  <!-- <video preload="auto" poster="http://revofit.com/images/promo.jpg" id="bgvid" style="display:none;">
+		<source src="http://blog.revofit.com/video/promo_new.mp4" type="video/mp4">
+		<!-- WCAG general accessibility recommendation is that media such as background video play through only once. Loop turned on for the purposes of illustration; if removed, the end of the video will fade in the same way created by pressing the "Pause" button  -->
+	<!-- </video>
+	<img src="http://revofit.com/images/loader_60x60.gif" id="loading" />
+	<div id="progressText" class="progressText">0%</div> --> 
+
+
+
+	<div id="wrapper" class="wrapper">
+		<div class="box box1"></div>
+		<div class="box box2"></div>
+		<div class="box box3"></div>
+		<div class="box box4"></div>
+	</div>
+
+ </body>
+</html>

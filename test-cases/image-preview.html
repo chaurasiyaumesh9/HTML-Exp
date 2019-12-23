@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Transition</title>
+  <style type="text/css">
+	*{margin:0;padding:0;box-sizing:border:box;}
+	html,body{height:100%;}
+	.wrapper{width:100%;min-height:100%;background:#9999cc;overflow:auto;}
+	.cb{clear:both;}
+  </style>
+  <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+	.image-container{
+		margin:120px auto 10px auto;
+		width:640px;
+	}
+	.image-container .image-box{
+		width:640px;
+		height:320px;
+		background:transparent;
+		position:relative;
+		overflow:hidden;
+		
+	}
+	.image-container .image-box > ul{
+		margin:0 auto;padding:0;list-style-type:none;
+		display:table;
+		overflow:hidden;
+		
+	}
+	.image-container .image-box > ul > li{
+		display:table-cell;
+		position:absolute;
+		left:0;top:0;
+		perspective:1250px;
+	}
+	.image-container .image-box > ul > li > input[type='radio']{
+		display:none;
+	}
+	.image-container .image-box > ul > li > input[type='radio'] + img{
+		position:relative;
+		opacity:0;
+		transform:rotate3d(1,1,1,45deg) ;
+		transition:transform 0.5s ease-in-out 0s, opacity 0.5s ease-in-out 0s;
+	}
+	.image-container .image-box > ul > li > input[type='radio']:checked + img{
+		transform:rotate3d(1,1,1,0deg) ;
+		opacity:1;
+	}
+	
+	
+	.image-container .thumbnails{
+		margin-top:5px;
+		padding:10px;
+	}
+	.image-container .thumbnails ul{
+		margin:0 auto;padding:0;list-style-type:none;
+		border:1px none red;
+		display:table;
+		border-spacing: 5px;
+	}
+	.image-container .thumbnails ul > li{
+		width:110px;
+		height:96px;
+		border:5px solid #cccccc;
+		display:table-cell;
+		overflow:hidden;
+		border-radius:5px;
+	}
+
+	.image-container .thumbnails ul > li:last-child{
+		
+	}
+	.image-container .thumbnails ul > li > label{display:block;width:100%;height:100%;margin:0;}
+	.image-container .thumbnails ul > li > label > img{
+		width:100%;
+		height:100%;
+		display:block;
+		cursor:pointer;
+		opacity:0.35;
+	}
+	.image-container .thumbnails ul > li img:hover{
+		opacity:1;
+	}
+
+  </style>
+  <script type="text/javascript">
+	$( document ).ready( function(){
+		$(".image-container .thumbnails ul > li").click( function(e){
+			$(this).addClass('active').siblings().removeClass('active');
+
+		});
+	
+	});
+  </script>
+ </head>
+ <body>
+  <div id="" class="wrapper">
+	<div class='image-container'>
+		<div id="" class="image-box">
+			<ul>
+				<li>
+					<input type='radio' name='slider-preview' id='slide1' />
+					<img src="images/00kih8g.jpg" width="640" height="320" border="0" alt="">
+				</li>
+				<li>
+					<input type='radio' name='slider-preview' id='slide2' />
+					<img src="images/2rT2vdx.jpg" width="640" height="320" border="0" alt="">
+				</li>
+				<li>
+					<input type='radio' name='slider-preview' id='slide3' />
+					<img src="images/3yiC6Yq.jpg" width="640" height="320" border="0" alt="">
+				</li>
+				<li>
+					<input type='radio' name='slider-preview' id='slide4' />
+					<img src="images/8k3N3EL.jpg" width="640" height="320" border="0" alt="">
+				</li>
+				<li>
+					<input type='radio' name='slider-preview' id='slide5' />
+					<img src="images/40Ly3VB.jpg" width="640" height="320" border="0" alt="">
+				</li>
+			</ul>
+		</div>
+		<div id="" class="thumbnails">
+			<ul>
+				<li class='active'><label for='slide1'><img src="images/00kih8g.jpg" width="640" height="320" border="0" alt=""></label></li>
+				<li><label for='slide2'><img src="images/2rT2vdx.jpg" width="640" height="320" border="0" alt=""></label></li>
+				<li><label for='slide3'><img src="images/3yiC6Yq.jpg" width="640" height="320" border="0" alt=""></label></li>
+				<li><label for='slide4'><img src="images/8k3N3EL.jpg" width="640" height="320" border="0" alt=""></label></li>
+				<li><label for='slide5'><img src="images/40Ly3VB.jpg" width="640" height="320" border="0" alt=""></label></li>
+				<div id="" class="cb"></div>
+			</ul>
+		</div>
+	</div>
+  </div>
+ </body>
+</html>
